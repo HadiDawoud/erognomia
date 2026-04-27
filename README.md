@@ -1,4 +1,4 @@
-# Ergonomia 🤖
+# Ergonomia 
  
 > An ergonomically designed AI chatbot for the Immersive Reality Lab at Hamm-Lippstadt University of Applied Sciences.
  
