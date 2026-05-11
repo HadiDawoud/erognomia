@@ -3,10 +3,15 @@ import logging
 import re
 import time
 from typing import Any, Dict, Iterator, List, Optional, Set, Tuple
-from urllib.parse import urlparse, urljoin, urlunparse
+from urllib.parse import urlparse, urlunparse
 
 import requests
 from bs4 import BeautifulSoup
+
+from src.ingestion.script_paths import (
+    discover_urls_from_html,
+    supplemental_text_from_scripts,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -83,30 +88,39 @@ class WebScraper:
         text = re.sub(r"\n\s*\n", "\n\n", text)
         return text.strip()
 
+    def fetch_and_process(self, url: str, response: requests.Response) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+        """Build one document from a successful HTML response; return raw HTML for link discovery (or None if not HTML)."""
+        ctype = response.headers.get("Content-Type", "")
+        if "text/html" not in ctype:
+            return None, None
+
+        raw = response.text or ""
+        soup = BeautifulSoup(raw, "lxml")
+        title_el = soup.title.string if soup.title else None
+        title = title_el.strip() if title_el else url
+
+        extra = supplemental_text_from_scripts(raw, url)
+        content = self.clean_html(raw)
+        if extra:
+            content = f"{content}\n\n{extra}".strip() if content else extra
+
+        if not content:
+            return None, raw
+
+        return {
+            "url": url,
+            "title": title,
+            "content": content,
+            "content_hash": hashlib.sha256(content.encode("utf-8")).hexdigest(),
+            "timestamp": time.time(),
+        }, raw
+
     def scrape(self, url: str) -> Optional[Dict[str, Any]]:
         try:
             response = self.session.get(url, timeout=30)
             response.raise_for_status()
-
-            ctype = response.headers.get("Content-Type", "")
-            if "text/html" not in ctype:
-                return None
-
-            soup = BeautifulSoup(response.text, "lxml")
-            title_el = soup.title.string if soup.title else None
-            title = title_el.strip() if title_el else url
-            content = self.clean_html(response.text)
-
-            if not content:
-                return None
-
-            return {
-                "url": url,
-                "title": title,
-                "content": content,
-                "content_hash": hashlib.sha256(content.encode("utf-8")).hexdigest(),
-                "timestamp": time.time(),
-            }
+            doc, _ = self.fetch_and_process(url, response)
+            return doc
         except Exception as e:
             logger.error("Error scraping %s: %s", url, e)
             return None
@@ -182,24 +196,24 @@ class WebCrawler:
             self.visited_norm.add(url)
             logger.info("Crawling: %s (depth %s)", url, depth)
 
-            data = self.scraper.scrape(url)
+            try:
+                response = self.scraper.session.get(url, timeout=30)
+                response.raise_for_status()
+            except Exception as e:
+                logger.error("Fetch failed %s: %s", url, e)
+                time.sleep(self.polite_delay_sec)
+                continue
+
+            data, raw_html = self.scraper.fetch_and_process(url, response)
             if data:
                 count += 1
                 yield data
 
-                try:
-                    response = self.scraper.session.get(url, timeout=20)
-                    if "text/html" not in response.headers.get("Content-Type", ""):
-                        continue
-                    soup = BeautifulSoup(response.text, "lxml")
-                    for a in soup.find_all("a", href=True):
-                        full = urljoin(url, a["href"])
-                        full = normalize_url(full.split("#")[0])
-                        if not full:
-                            continue
-                        if self._is_valid_normalized(full) and full not in self.visited_norm:
-                            self._enqueue(full, depth + 1)
-                except Exception as e:
-                    logger.warning("Link extraction failed for %s: %s", url, e)
+            if raw_html:
+                discovered = discover_urls_from_html(raw_html, url, self.domain)
+                for cand in discovered:
+                    nu = normalize_url(cand.split("#")[0])
+                    if nu and self._is_valid_normalized(nu) and nu not in self.visited_norm:
+                        self._enqueue(nu, depth + 1)
 
             time.sleep(self.polite_delay_sec)

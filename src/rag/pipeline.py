@@ -46,7 +46,20 @@ class RAGPipeline:
             for kw in classification["search_keywords"]:
                 kw_results = self.vector_store.keyword_search(kw, k=2)
                 results.extend(kw_results)
-                
+
+        # Person queries: boost lexical hits on full name and name parts (helps once profile pages exist in store).
+        if classification.get("query_type") == "person":
+            kws_person: List[str] = []
+            ent2 = classification.get("entity_name")
+            if isinstance(ent2, str) and ent2.strip():
+                kws_person.append(ent2.strip())
+                for part in ent2.replace("-", " ").replace(",", " ").split():
+                    p = part.strip().strip(";.:\"'")
+                    if len(p) >= 3:
+                        kws_person.append(p)
+            for kw in kws_person:
+                results.extend(self.vector_store.keyword_search(kw, k=8))
+
         # Deduplicate
         seen_ids = set()
         deduped = []
