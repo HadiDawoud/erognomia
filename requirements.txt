@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+chromadb
+sentence-transformers
+beautifulsoup4
+lxml
+requests
+pydantic-settings
+httpx
+ruff
+pytest
+python-multipart
+jinja2
