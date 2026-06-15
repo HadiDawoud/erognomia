@@ -691,11 +691,11 @@ export default function ChatPage() {
             <div className="relative w-full max-w-3xl">
               <div
                 aria-hidden
-                className="pointer-events-none absolute left-1/2 top-7 h-44 w-[130%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+                className="pointer-events-none absolute left-1/2 top-7 h-64 w-[170%] max-w-[1200px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
                 style={{
                   background:
-                    "radial-gradient(ellipse at center, rgba(56,120,255,0.55) 0%, rgba(99,102,241,0.35) 40%, rgba(56,120,255,0) 70%)",
-                  opacity: 0.75,
+                    "radial-gradient(ellipse at center, rgba(56,120,255,0.75) 0%, rgba(99,102,241,0.5) 40%, rgba(56,120,255,0) 70%)",
+                  opacity: 0.9,
                 }}
               />
               <div className="relative">{composer}</div>
