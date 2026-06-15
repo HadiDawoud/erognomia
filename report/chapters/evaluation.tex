@@ -1,0 +1,73 @@
+% Kapitel 5: Evaluation
+\section{Evaluation}
+\label{sec:evaluation}
+
+\subsection{Methode}
+
+Die Evaluation erfolgte durch Nutzertests mit fünf Probanden (N=5) aus der Zielgruppe Studierende. Die Tests folgten einem Think-Aloud-Protokoll mit drei Aufgaben:
+
+\begin{enumerate}
+    \item \textbf{Aufgabe 1:} ``Finde heraus, welche VR-Projekte das Lab gerade betreibt.''
+    \item \textbf{Aufgabe 2:} ``Kannst du herausfinden, ob du als Student Geräte ausleihen kannst?''
+    \item \textbf{Aufgabe 3:} ``Finde eine Publikation zum Thema EEG oder Biosensoren.''
+\end{enumerate}
+
+Nach den Aufgaben füllten die Probanden den SUS-Fragebogen aus. Zusätzlich wurde der Chatbot gegen die 18 Amershi-Guidelines evaluiert.
+
+\subsection{SUS-Ergebnisse}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Proband} & \textbf{SUS-Score} \\
+\midrule
+P1 & 72,5 \\
+P2 & 65,0 \\
+P3 & 77,5 \\
+P4 & 70,0 \\
+P5 & 82,5 \\
+\midrule
+\textbf{Mittelwert} & \textbf{73,5} \\
+\bottomrule
+\end{tabularx}
+
+Mit einem Mittelwert von 73,5 liegt Ergonomia über dem Benchmark von 68~\cite{lewis2018} und damit im Bereich ``gut'' (B-Note nach der SUS-Schulnoten-Skala).
+
+\subsection{Amershi-Evaluation}
+
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{\#} & \textbf{Guideline} & \textbf{Erfüllt} \\
+\midrule
+G1 & Make clear what the system can do & \checkmark \\
+G2 & Make clear how well the system can do what it can do & \checkmark \\
+G3 & Time services based on context & \checkmark \\
+G4 & Show contextually relevant information & \checkmark \\
+G5 & Match relevant social norms & \checkmark \\
+G6 & Mitigate social biases & -- \\
+G7 & Support efficient invocation & \checkmark \\
+G8 & Support efficient dismissal & \checkmark \\
+G9 & Support efficient correction & -- \\
+G10 & Scope services when in doubt & \checkmark \\
+G11 & Make clear why the system did what it did & \checkmark \\
+G12 & Remember recent interactions & \checkmark \\
+G13 & Learn from user behavior & -- \\
+G14 & Update and adapt cautiously & -- \\
+G15 & Encourage granular feedback & -- \\
+G16 & Convey consequences of user actions & -- \\
+G17 & Provide global controls & -- \\
+G18 & Notify users about changes & -- \\
+\bottomrule
+\end{tabularx}
+
+Die Evaluation zeigt, dass Ergonomia die zentralen Guidelines für den initialen Use Case gut erfüllt, während fortgeschrittene Features (adaptives Lernen, Feedback-Mechanismen) für das Projektziel nicht erforderlich waren.
+
+\subsection{Qualitative Befunde}
+
+Die Think-Aloud-Protokolle ergaben folgende wiederkehrende Themen:
+
+\begin{itemize}
+    \item Positiv: ``Die Antworten sind präzise und die Quellenangaben helfen, die Ergebnisse zu verifizieren.''
+    \item Positiv: ``Der Chatbot ist schnell und die Antworten kommen flüssig.''
+    \item Verbesserung: ``Einige Fachbegriffe werden nicht erkannt -- da wäre ein Synonym-Feature hilfreich.''
+    \item Verbesserung: ``Vorschlagsfragen zum Einstieg würden den Nutzungseinstieg erleichtern.''
+\end{itemize}

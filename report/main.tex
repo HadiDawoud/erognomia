@@ -1,0 +1,119 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Packages ──────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\usepackage{setspace}
+\setstretch{1.25}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{caption}
+
+% ── Seitenzahlen ──────────────────────────────────────────────────────────
+\pagestyle{plain}
+
+% ── Überschriften ─────────────────────────────────────────────────────────
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{\z@}
+  {-3.5ex \@plus -1ex \@minus -.2ex}{2.3ex \@plus.2ex}
+  {\Large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}
+  {-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}
+  {\large\bfseries}}
+\makeatother
+
+% ── Metadaten ─────────────────────────────────────────────────────────────
+\title{Ergonomia -- Ein ergonomisch gestalteter KI-Chatbot\\für das Immersive Reality Lab}
+\author{}
+\date{}
+
+\begin{document}
+
+%% ── Deckblatt ──────────────────────────────────────────────────────────
+\begin{titlepage}
+    \centering
+    \vspace*{4cm}
+    {\Huge\bfseries Ergonomia\par}
+    \vspace{0.8cm}
+    {\Large Ein ergonomisch gestalteter KI-Chatbot\\für das Immersive Reality Lab\par}
+    \vspace{1.5cm}
+    {\large Projektbericht --- Software-Ergonomie (AIS-B-2-6.10)\par}
+    \vspace{0.5cm}
+    {\large Sommersemester 2026\par}
+    \vspace{2cm}
+    \begin{tabular}{rl}
+        \textbf{Name:} & Vorname Nachname \\
+        \textbf{Matrikelnummer:} & 12345678 \\
+        & \\
+        \textbf{Name:} & Vorname Nachname \\
+        \textbf{Matrikelnummer:} & 87654321 \\
+    \end{tabular}
+    \vspace{1.5cm}\par
+    {\large Hochschule Hamm-Lippstadt\par}
+    {\large Betreuer: Prof. Dr.-Ing. Jan-Niklas Voigt-Antons\par}
+    \vspace{1cm}
+    {\large Abgabedatum: \today\par}
+\end{titlepage}
+
+%% ── Inhaltsverzeichnis ─────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+%% ── Kapitel ────────────────────────────────────────────────────────────
+\include{chapters/einleitung}
+\include{chapters/problemdefinition}
+\include{chapters/theoretische_fundierung}
+\include{chapters/konzeption}
+\include{chapters/evaluation}
+\include{chapters/reflexion}
+
+%% ── Literaturverzeichnis ───────────────────────────────────────────────
+\newpage
+\addcontentsline{toc}{section}{Literaturverzeichnis}
+\begin{thebibliography}{9}
+\bibitem{amershi2019}
+S.~Amershi, D.~Weld, M.~Vorvoreanu, \emph{et al.},
+``Guidelines for Human-AI Interaction,''
+in \emph{Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems},
+S.~1--13, 2019.
+
+\bibitem{nielsen1994}
+J.~Nielsen,
+\emph{Usability Engineering}.
+San Francisco: Morgan Kaufmann, 1994.
+
+\bibitem{iso9241}
+DIN EN ISO 9241-110,
+``Ergonomie der Mensch-System-Interaktion -- Teil 110: Interaktionsprinzipien,''
+2020.
+
+\bibitem{richter2016}
+M.~Richter und M.~Flückiger,
+\emph{Usability und UX kompakt}.
+Berlin: Springer, 2016.
+
+\bibitem{tullis2008}
+T.~Tullis und B.~Albert,
+\emph{Measuring the User Experience}.
+San Francisco: Morgan Kaufmann, 2008.
+
+\bibitem{norman2013}
+D.~Norman,
+\emph{The Design of Everyday Things}.
+New York: Basic Books, 2013.
+
+\bibitem{lewis2018}
+J.~R.~Lewis,
+``The System Usability Scale: Past, Present, and Future,''
+\emph{International Journal of Human--Computer Interaction},
+Bd.~34, Nr.~7, S.~577--590, 2018.
+\end{thebibliography}
+
+\end{document}

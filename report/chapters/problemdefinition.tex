@@ -1,0 +1,42 @@
+% Kapitel 2: Problemdefinition & Use Case
+\section{Problemdefinition \& Use Case}
+
+\subsection{Nutzungssituation}
+
+Die Website des Immersive Reality Lab richtet sich an mehrere heterogene Nutzergruppen:
+
+\begin{itemize}
+    \item \textbf{Studierende}, die nach Bachelor-/Masterarbeitsthemen, Lehrveranstaltungen oder Geräteausleihe suchen.
+    \item \textbf{Forschungsinteressierte}, die Publikationen und Kooperationsmöglichkeiten erkunden möchten.
+    \item \textbf{Industriepartner}, die sich über konkrete Projekte, Technologietransfer und Ansprechpartner informieren wollen.
+\end{itemize}
+
+Die Nutzungssituation ist typischerweise \textit{goal-oriented}: Der Besucher hat eine konkrete Frage und möchte diese schnell beantwortet haben, ohne die gesamte Seitenstruktur durchsuchen zu müssen.
+
+\subsection{Defizite der aktuellen Website}
+
+Eine Analyse der bestehenden Website zeigt folgende Problembereiche:
+
+\begin{enumerate}
+    \item \textbf{heterogene Inhaltsstruktur}: Projekte, Publikationen und Lehre sind über verschiedene Unterseiten verteilt, teils mit dynamischen Parametern.
+    \item \textbf{Keine interne Suchfunktion}: Nutzer müssen manuell navigieren oder die Browsersuche (Strg+F) verwenden.
+    \item \textbf{Fachspezifische Terminologie}: Begriffe wie ``INFUSE'', ``XRT-HuFuSa'' oder ``Biosensorik'' setzen Vorwissen voraus.
+\end{enumerate}
+
+\subsection{Anforderungen an den Chatbot}
+
+Aus der Nutzungssituation leiten sich folgende Anforderungen ab:
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Kategorie} & \textbf{Anforderung} \\
+\midrule
+Funktional & Beantwortung von Fragen zu allen Website-Inhalten \\
+Funktional & Quellenangabe für jede Antwort \\
+Funktional & Gesprächsverlauf über mehrere Anfragen \\
+Usability & Onboarding: Chatbot erklärt eigene Fähigkeiten \\
+Usability & Fehlertoleranz: klare Rückmeldung bei Wissenslücken \\
+Usability & Ladeindikator während der Antwortgenerierung \\
+Technisch & Datenschutz: lokale Verarbeitung (Ollama, ChromaDB) \\
+\bottomrule
+\end{tabularx}

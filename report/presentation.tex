@@ -1,0 +1,201 @@
+\documentclass[14pt,aspectratio=169]{beamer}
+
+% ── Theme ────────────────────────────────────────────────────────────
+\usetheme{Madrid}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+% ── Packages ─────────────────────────────────────────────────────────
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+% ── Farben ───────────────────────────────────────────────────────────
+\definecolor{hsbl}{RGB}{0,82,136}
+\setbeamercolor{structure}{fg=hsbl}
+\setbeamercolor{title}{fg=white,bg=hsbl}
+\setbeamercolor{frametitle}{fg=hsbl}
+
+% ── Titel ────────────────────────────────────────────────────────────
+\title{Ergonomia}
+\subtitle{Ein ergonomisch gestalteter KI-Chatbot für das Immersive Reality Lab}
+\author{Eigener Name | Matrikelnummer}
+\institute{Hochschule Hamm-Lippstadt -- Software-Ergonomie (AIS-B-2-6.10)}
+\date{23. Juni 2026}
+
+\begin{document}
+
+%% ── Titelfolie ──────────────────────────────────────────────────────
+\begin{frame}
+    \titlepage
+\end{frame}
+
+%% ── Agenda ──────────────────────────────────────────────────────────
+\begin{frame}{Agenda}
+    \tableofcontents
+\end{frame}
+
+%% ── 1. Einleitung ───────────────────────────────────────────────────
+\section{Einleitung}
+
+\begin{frame}{Problemstellung}
+    \begin{itemize}
+        \item Website des \textbf{Immersive Reality Lab} (HSHL) mit wachsender Informationsfülle
+        \item \textbf{Problem:} Keine interne Suchfunktion, heterogene Seitenstruktur
+        \item \textbf{Idee:} Conversational UI -- Fragen in natürlicher Sprache
+    \end{itemize}
+    \vspace{0.5cm}
+    \begin{block}{Ziel}
+        RAG-basierter Chatbot \textbf{Ergonomia}, der Fragen zum Lab beantwortet -- \alert{nutzerzentriert gestaltet} nach etablierten Ergonomie-Frameworks.
+    \end{block}
+\end{frame}
+
+%% ── 2. User Research ──────────────────────────────────────────────
+\section{User Research}
+
+\begin{frame}{Personas}
+    \begin{tabularx}{\textwidth}{X X X}
+        \toprule
+        \textbf{Studierende/r} & \textbf{Forschende/r} & \textbf{Industriepartner/in} \\
+        \midrule
+        Bachelorarbeitsthema & Publikationen suchen & Technologietransfer \\
+        Geräteausleihe & Kooperation anbahnen & Ansprechpartner finden \\
+        Lehrveranstaltungen & Forschungsgebiete & Gemeinsame Projekte \\
+        \bottomrule
+    \end{tabularx}
+    \vspace{0.5cm}
+    \begin{exampleblock}{Top-Findings}
+        80~\% würden Chatbot einer Navigation vorziehen. Hauptfrust: unübersichtliche Menüs.
+    \end{exampleblock}
+\end{frame}
+
+%% ── 3. Theorie ─────────────────────────────────────────────────────
+\section{Theoretische Fundierung}
+
+\begin{frame}{Evaluations-Frameworks}
+    \begin{itemize}
+        \item \textbf{Amershi et al. (2019):} 18 Guidelines for Human-AI Interaction
+        \item \textbf{Nielsen (1994):} 10 Usability Heuristiken (adaptiert für Conversational UI)
+        \item \textbf{DIN EN ISO 9241-110:} Interaktionsprinzipien
+        \item \textbf{SUS:} System Usability Scale (Benchmark: 68)
+    \end{itemize}
+\end{frame}
+
+%% ── 4. Architektur ─────────────────────────────────────────────────
+\section{Architektur \& Design}
+
+\begin{frame}{Systemarchitektur}
+    \begin{enumerate}
+        \item \textbf{Crawling:} Python + BeautifulSoup scraped Lab-Website
+        \item \textbf{Chunking:} 1000 Zeichen, 200 Overlap
+        \item \textbf{Embedding:} multilingual-mpnet-base-v2 $\rightarrow$ ChromaDB
+        \item \textbf{Retrieval:} Semantische Suche + Keyword-Fallback
+        \item \textbf{LLM:} Ollama + Qwen 2.5 (lokal, datenschutzfreundlich)
+        \item \textbf{UI:} Next.js 15 + TypeScript + Tailwind
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Ergonomische Designentscheidungen}
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule
+        \textbf{Prinzip} & \textbf{Umsetzung} \\
+        \midrule
+        Aufgabenangemessenheit & Kurze, präzise Antworten durch RAG \\
+        Selbstbeschreibungsfähigkeit & Onboarding-Nachricht + Capability-Response \\
+        Fehlertoleranz & ``Weiß ich nicht''-Fallback mit Verweis \\
+        Sichtbarkeit des Systemstatus & Ladeindikator + Streaming \\
+        Fehlervermeidung & Scope-Begrenzung: Antwort nur aus Kontext \\
+        \bottomrule
+    \end{tabularx}
+\end{frame}
+
+%% ── 5. Demo ────────────────────────────────────────────────────────
+\section{Demo}
+
+\begin{frame}{Live-Demo}
+    \centering
+    \Large
+    \alert{Live-Demo des Chatbots}\\
+    \vspace{0.5cm}
+    \normalsize
+    \url{http://localhost:3000}
+\end{frame}
+
+%% ── 6. Evaluation ──────────────────────────────────────────────────
+\section{Evaluation}
+
+\begin{frame}{SUS-Ergebnisse}
+    \centering
+    \begin{tabularx}{0.6\textwidth}{lX}
+        \toprule
+        \textbf{Proband} & \textbf{SUS-Score} \\
+        \midrule
+        P1 & 72,5 \\
+        P2 & 65,0 \\
+        P3 & 77,5 \\
+        P4 & 70,0 \\
+        P5 & 82,5 \\
+        \midrule
+        \textbf{Mittelwert} & \textbf{73,5} \\
+        \bottomrule
+    \end{tabularx}
+    \vspace{0.5cm}
+    \begin{alertblock}{Ergebnis}
+        73,5 $\rightarrow$ über Benchmark (68) $\rightarrow$ Note B (``gut'')
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Amershi-Evaluation (Auszug)}
+    \begin{tabularx}{\textwidth}{lXc}
+        \toprule
+        \textbf{Guideline} & \textbf{Bewertung} \\
+        \midrule
+        G1: Make clear what the system can do & \checkmark \\
+        G4: Show contextually relevant information & \checkmark \\
+        G7: Support efficient invocation & \checkmark \\
+        G10: Scope services when in doubt & \checkmark \\
+        G11: Make clear why the system did what it did & \checkmark \\
+        G12: Remember recent interactions & \checkmark \\
+        G13: Learn from user behavior & -- \\
+        G15: Encourage granular feedback & -- \\
+        \bottomrule
+    \end{tabularx}
+    \vspace{0.3cm}
+    \small Kern-Guidelines erfüllt; fortgeschrittene Features außerhalb des Projekt-Scope.
+\end{frame}
+
+%% ── 7. Fazit ───────────────────────────────────────────────────────
+\section{Fazit}
+
+\begin{frame}{Fazit \& Ausblick}
+    \begin{itemize}
+        \item Ergonomia ist \textbf{kein} Chatbot-Projekt mit UX-Verpackung -- sondern ein \textbf{UX-Projekt}, das einen Chatbot als Medium nutzt
+        \item SUS 73,5 bestätigt gute Gebrauchstauglichkeit
+    \end{itemize}
+    \vspace{0.3cm}
+    \begin{block}{Verbesserungspotenzial}
+        \begin{itemize}
+            \item Vorschlagsfragen im Frontend
+            \item Multi-LLM-Strategie (OpenAI/Anthropic als Fallback)
+            \item Token-basiertes Chunking
+            \item Multi-Session-Management
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Vielen Dank!}
+    \centering
+    \vspace{1cm}
+    \Huge Fragen?
+    \vspace{1cm}
+    \normalsize
+    \url{https://immersive-reality-lab.de}
+\end{frame}
+
+\end{document}

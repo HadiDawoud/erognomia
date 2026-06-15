@@ -1,0 +1,33 @@
+% Kapitel 6: Reflexion & Fazit
+\section{Reflexion \& Fazit}
+
+\subsection{Herausforderungen}
+
+Die größte Herausforderung lag in der heterogenen Struktur der Zielwebsite. Dynamisch geladene Inhalte und unterschiedliche Seitenformate erschwerten das konsistente Extrahieren von Textinhalten. Der Web-Crawler musste mehrfach angepasst werden, um auch Single-Page-Application-ähnliche Seiten korrekt zu verarbeiten.
+
+Eine weitere Herausforderung war die Chunk-Strategie: Die initiale rein zeichenbasierte Aufteilung führte zu Chunks, die mitten im Satz endeten. Durch die Implementierung einer Satzgrenzen-Erkennung (Newline- und Punkt-Suche) konnte die Qualität deutlich verbessert werden.
+
+\subsection{Limitationen}
+
+\begin{itemize}
+    \item \textbf{Kein Multi-Provider-Support:} Aktuell wird ausschließlich Ollama als LLM-Backend unterstützt. Ein Fallback auf OpenAI oder Anthropic wäre wünschenswert.
+    \item \textbf{Einfaches Chunking:} Die zeichenbasierte Aufteilung ist nicht tokenbewusst. Ein tokenbasiertes Chunking (z.~B. mit tiktoken) würde die Retrieval-Qualität weiter verbessern.
+    \item \textbf{Keine automatische Nachlern-Funktion:} Der Chatbot kann nicht aus neuen oder korrigierten Informationen lernen, ohne die gesamte Datenbank neu zu importieren.
+    \item \textbf{Stichprobengröße:} Die Evaluation mit N=5 ist ausreichend für formative Tests, aber nicht generalisierbar.
+\end{itemize}
+
+\subsection{Verbesserungsvorschläge}
+
+\begin{enumerate}
+    \item \textbf{Multi-LLM-Strategie:} Integration von OpenAI/Anthropic als Fallback, wenn Ollama nicht verfügbar ist.
+    \item \textbf{Vorschlagsfragen:} Anzeige von kontextbezogenen Einstiegsfragen als Chips im Frontend.
+    \item \textbf{Session-Management:} Vollständige Implementierung der Multi-Session-Verwaltung im Frontend.
+    \item \textbf{Testabdeckung:} Unit- und Integrationstests für die RAG-Pipeline und API-Endpunkte.
+    \item \textbf{Dokumentation:} Die Nutzerforschungsergebnisse und Design-Artefakte sollten in einem dedizierten Dokumentationsordner strukturiert werden.
+\end{enumerate}
+
+\subsection{Fazit}
+
+Ergonomia zeigt, dass ein RAG-basierter Chatbot mit rein lokalen Komponenten realisiert werden kann, der nutzerzentrierte Antworten auf Basis einer bestehenden Website liefert. Die Evaluation belegt eine gute Gebrauchstauglichkeit (SUS 73,5). Das Projekt versteht sich nicht als abgeschlossenes Produkt, sondern als Grundlage für iterative Weiterentwicklung im Sinne des Human-Centred Design nach DIN EN ISO 9241-210.
+
+Der zentrale Erkenntnisgewinn liegt in der Erkenntnis, dass software-ergonomische Prinzipien nicht erst auf der UI-Ebene greifen, sondern bereits bei der Architekturentscheidung (Chunk-Größe, Embedding-Strategie, Fehlerbehandlung) wirksam werden. Ergonomia ist kein Chatbot-Projekt mit UX-Verpackung -- es ist ein UX-Projekt, das einen Chatbot als Interaktionsmedium nutzt.

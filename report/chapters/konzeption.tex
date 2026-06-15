@@ -1,0 +1,52 @@
+% Kapitel 4: Konzeption & Entwicklung
+\section{Konzeption \& Entwicklung}
+
+\subsection{Designprozess}
+
+Die Entwicklung folgte einem iterativen Prozess: User Research $\rightarrow$ Design $\rightarrow$ Prototyping $\rightarrow$ Evaluation. Auf Basis von Nutzerinterviews (siehe Anhang) wurden drei Persona-Typen identifiziert: Studierende, Forschungsinteressierte und Industriepartner. Die häufigsten Informationsbedürfnisse waren Projektinformationen, Publikationen, Lehrangebote und Kontaktdaten.
+
+\subsection{Architektur}
+
+Ergonomia folgt einer modularen Architektur mit fünf Schichten:
+
+\begin{enumerate}
+    \item \textbf{Ingestion:} Ein Web-Crawler scraped die Zielseiten, extrahiert und normalisiert Textinhalte und speichert sie als JSON-Snapshots.
+    \item \textbf{Chunking \& Embedding:} Ein Text-Chunker zerlegt die Rohdaten in überlappende Segmente (1000 Zeichen, 200 Zeichen Overlap). Ein Sentence-Transformer (\texttt{paraphrase-multilingual-mpnet-base-v2}) erzeugt Vektor-Embeddings.
+    \item \textbf{Vektordatenbank:} ChromaDB speichert Embeddings und Metadaten und ermöglicht semantische Ähnlichkeitssuche sowie Keyword-Filter.
+    \item \textbf{RAG-Pipeline:} Eine Query-Analyse klassifiziert Anfragen (Begrüßung, Capability-Frage, inhaltliche Frage). Bei inhaltlichen Fragen werden relevante Chunks abgerufen und dem LLM als Kontext übergeben.
+    \item \textbf{API \& UI:} Ein FastAPI-Backend stellt REST- und SSE-Endpunkte bereit. Die React/Next.js-Oberfläche rendert Chat-Verlauf und Quellenangaben.
+\end{enumerate}
+
+\subsection{Designentscheidungen}
+
+\subsubsection{Chunk-Größe und Overlap}
+
+Die Chunk-Größe von 1000 Zeichen mit 200 Zeichen Überlappung wurde gewählt, um ausreichend Kontext für das LLM zu liefern und gleichzeitig die Anzahl der Chunks pro Query begrenzt zu halten. Der Overlap verhindert Informationsverlust an Chunk-Grenzen.
+
+\subsubsection{Embedding-Modell}
+
+Die Wahl fiel auf \texttt{paraphrase-multilingual-mpnet-base-v2}, da es mehrsprachige Texte (Deutsch/Englisch) unterstützt und ein gutes Verhältnis von Performance zu Modellgröße bietet.
+
+\subsubsection{Streaming}
+
+Antworten werden per Server-Sent Events (SSE) gestreamt. Dies verbessert die wahrgenommene Geschwindigkeit -- der Nutzer sieht bereits Text, während das LLM noch generiert.
+
+\subsubsection{Lokale Verarbeitung}
+
+Sämtliche Komponenten (Embedding, Vektordatenbank, LLM) laufen lokal. Dies adressiert Datenschutzanforderungen und macht das System unabhängig von externen APIs.
+
+\subsection{Technische Umsetzung}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Komponente} & \textbf{Technologie} \\
+\midrule
+Backend & Python, FastAPI, Uvicorn \\
+Frontend & Next.js 15, React 18, TypeScript, Tailwind CSS \\
+Vektordatenbank & ChromaDB (persistent, lokal) \\
+Embedding & sentence-transformers (multilingual-mpnet-base-v2) \\
+LLM & Ollama + Qwen 2.5 \\
+Scraping & BeautifulSoup, requests, lxml \\
+State Management & React useState, zustand (vorgesehen) \\
+\bottomrule
+\end{tabularx}

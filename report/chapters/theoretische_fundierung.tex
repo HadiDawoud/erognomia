@@ -1,0 +1,43 @@
+% Kapitel 3: Theoretische Fundierung
+\section{Theoretische Fundierung}
+
+Die Entwicklung von Ergonomia stützt sich auf drei etablierte Rahmenwerke der Mensch-Computer-Interaktion und Software-Ergonomie.
+
+\subsection{DIN EN ISO 9241-110: Interaktionsprinzipien}
+
+Die Norm DIN EN ISO 9241-110~\cite{iso9241} definiert sieben Interaktionsprinzipien für die Gestaltung interaktiver Systeme. Für Ergonomia wurden folgende Prinzipien besonders berücksichtigt:
+
+\begin{description}
+    \item[Aufgabenangemessenheit:] Der Chatbot liefert kurze, präzise Antworten, die auf die gestellte Frage zugeschnitten sind. Das RAG-System stellt sicher, dass ausschließlich relevante Kontextinformationen einfließen.
+    \item[Selbstbeschreibungsfähigkeit:] Die Begrüßungsnachricht und die Capability-Antwort erklären dem Nutzer unmittelbar, welche Fragen der Chatbot beantworten kann.
+    \item[Fehlertoleranz:] Kann der Chatbot eine Frage nicht beantworten (weil der Kontext keine Antwort enthält), gibt er eine klare Rückmeldung und verweist auf die Website.
+    \item[Steuerbarkeit:] Der Nutzer kann jederzeit das Thema wechseln, ohne einen festgelegten Dialogpfad zu durchlaufen.
+\end{description}
+
+\subsection{Nielsens 10 Usability Heuristiken}
+
+Nielsen~\cite{nielsen1994} definiert zehn Heuristiken für gebrauchstaugliche Benutzungsschnittstellen. Für conversational UI wurden diese adaptiert:
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Heuristik} & \textbf{Anwendung auf Ergonomia} \\
+\midrule
+Sichtbarkeit des Systemstatus & Ladeindikator (``Ergonomia denkt nach\dots'') \\
+Wirklichkeitsnähe & Natürliche Sprache, kein technischer Jargon \\
+Konsistenz & Einheitlicher Ton und Antwortformat \\
+Fehlervermeidung & Scope-Begrenzung durch RAG (Antwort nur aus Kontext) \\
+Hilfe bei Fehlern & Klare Fallback-Nachrichten mit Alternativvorschlag \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Guidelines for Human-AI Interaction (Amershi et al. 2019)}
+
+Amershi et al.~\cite{amershi2019} schlagen 18 Richtlinien für die Gestaltung von Mensch-KI-Interaktion vor, gegliedert in vier Phasen: initial, during interaction, when wrong, over time. Ergonomia wurde gegen alle 18 Richtlinien evaluiert (siehe Kapitel~\ref{sec:evaluation}), wobei ein besonderer Fokus auf den Richtlinien G1 (Make clear what the system can do), G4 (Show contextually relevant information), G7 (Support efficient invocation) und G10 (Scope services when in doubt) lag.
+
+\subsection{System Usability Scale (SUS)}
+
+Der SUS~\cite{lewis2018} ist ein standardisierter Fragebogen zur Erfassung der subjektiven Gebrauchstauglichkeit. Er besteht aus zehn Items mit fünfstufiger Likert-Skala und liefert einen Gesamtwert zwischen 0 und 100. Ein Wert über 68 gilt als überdurchschnittlich. Der SUS wurde nach den Nutzertests eingesetzt (siehe Kapitel~\ref{sec:evaluation}).
+
+\subsection{Retrieval-Augmented Generation (RAG)}
+
+RAG ist ein Architekturmuster, bei dem ein Retrieval-System relevante Kontextinformationen aus einer Wissensdatenbank abruft und diese einem Sprachmodell als Kontext für die Antwortgenerierung übergibt. Dies reduziert Halluzinationen und stellt sicher, dass Antworten auf faktenbasierten Quellen beruhen. Für Ergonomia wird ein lokaler RAG-Stack eingesetzt: ChromaDB als Vektordatenbank und Sentence-Transformer-Modelle für Embeddings, gekoppelt mit einem lokal laufenden LLM (Ollama).
