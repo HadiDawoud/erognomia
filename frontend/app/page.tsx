@@ -688,7 +688,18 @@ export default function ChatPage() {
                 Dein KI-Assistent für das Immersive Reality Lab. Frag mich alles rund ums IRL.
               </p>
             </div>
-            <div className="w-full max-w-3xl">{composer}</div>
+            <div className="relative w-full max-w-3xl">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-7 h-44 w-[130%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at center, rgba(56,120,255,0.55) 0%, rgba(99,102,241,0.35) 40%, rgba(56,120,255,0) 70%)",
+                  opacity: 0.75,
+                }}
+              />
+              <div className="relative">{composer}</div>
+            </div>
             <p className="mt-4 text-center text-[11px] text-gray-500">
               Ergonomia kann Fehler machen. Überprüfe wichtige Informationen auf der Website.
             </p>
