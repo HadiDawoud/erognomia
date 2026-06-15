@@ -6,6 +6,32 @@
   color-scheme: dark;
   --background: #0c0910;
   --foreground: #ededed;
+
+  /* Accent theme (default: blue) */
+  --accent: #2563eb;
+  --accent-hover: #3b82f6;
+  --accent-soft: #93c5fd;
+  --glow-start: rgba(56, 120, 255, 0.75);
+  --glow-mid: rgba(99, 102, 241, 0.5);
+  --glow-end: rgba(56, 120, 255, 0);
+}
+
+[data-theme="blue"] {
+  --accent: #2563eb;
+  --accent-hover: #3b82f6;
+  --accent-soft: #93c5fd;
+  --glow-start: rgba(56, 120, 255, 0.75);
+  --glow-mid: rgba(99, 102, 241, 0.5);
+  --glow-end: rgba(56, 120, 255, 0);
+}
+
+[data-theme="orange"] {
+  --accent: #ea580c;
+  --accent-hover: #f97316;
+  --accent-soft: #fdba74;
+  --glow-start: rgba(255, 140, 40, 0.75);
+  --glow-mid: rgba(249, 115, 22, 0.5);
+  --glow-end: rgba(255, 140, 40, 0);
 }
 
 body {

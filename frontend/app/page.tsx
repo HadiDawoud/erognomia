@@ -10,6 +10,7 @@ import {
   LayoutGrid,
   Loader2,
   Mic,
+  Palette,
   PanelLeft,
   Pencil,
   Plus,
@@ -102,6 +103,7 @@ export default function ChatPage() {
   const [search, setSearch] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
+  const [theme, setTheme] = useState<"blue" | "orange">("blue");
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -156,6 +158,17 @@ export default function ChatPage() {
       recognitionRef.current?.stop();
     };
   }, []);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("ergonomia-theme");
+    if (stored === "blue" || stored === "orange") setTheme(stored);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("ergonomia-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === "blue" ? "orange" : "blue"));
 
   const stopListening = useCallback(() => {
     recognitionRef.current?.stop();
@@ -381,7 +394,7 @@ export default function ChatPage() {
 
   const composer = (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="flex items-end gap-2 rounded-[28px] border border-white/10 bg-[#1b1722]/90 px-3 py-2 shadow-lg shadow-black/30 backdrop-blur transition focus-within:border-violet-500/50">
+      <div className="flex items-end gap-2 rounded-[28px] border border-white/10 bg-[#1b1722]/90 px-3 py-2 shadow-lg shadow-black/30 backdrop-blur transition focus-within:border-[var(--accent)]">
         <button
           type="button"
           title="Anhänge (bald verfügbar)"
@@ -427,7 +440,7 @@ export default function ChatPage() {
           <button
             type="submit"
             disabled={isLoading || !input.trim()}
-            className="grid h-9 w-9 place-items-center rounded-full bg-violet-600 text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-gray-500"
+            className="grid h-9 w-9 place-items-center rounded-full bg-[var(--accent)] text-white transition hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-gray-500"
           >
             {isLoading ? <Loader2 size={18} className="animate-spin" /> : <ArrowUp size={18} />}
           </button>
@@ -450,6 +463,7 @@ export default function ChatPage() {
 
   return (
     <div
+      data-theme={theme}
       className="flex h-screen text-gray-100"
       style={{
         background:
@@ -482,7 +496,7 @@ export default function ChatPage() {
             <button
               type="button"
               onClick={handleNewChat}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-violet-600 py-2.5 text-sm font-medium text-white transition hover:bg-violet-500"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-[var(--accent)] py-2.5 text-sm font-medium text-white transition hover:bg-[var(--accent-hover)]"
             >
               <Plus size={16} /> New Chat
             </button>
@@ -498,7 +512,7 @@ export default function ChatPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search chats..."
-                className="w-full rounded-lg border border-white/10 bg-white/5 py-2 pl-9 pr-3 text-sm text-gray-200 placeholder-gray-500 outline-none transition focus:border-violet-500/50"
+                className="w-full rounded-lg border border-white/10 bg-white/5 py-2 pl-9 pr-3 text-sm text-gray-200 placeholder-gray-500 outline-none transition focus:border-[var(--accent)]"
               />
             </div>
           </div>
@@ -530,7 +544,7 @@ export default function ChatPage() {
                         if (e.key === "Enter") saveTitle(session.id);
                         if (e.key === "Escape") cancelEditing();
                       }}
-                      className="min-w-0 flex-1 rounded bg-black/40 px-1.5 py-0.5 text-sm text-white outline-none ring-1 ring-violet-500/50"
+                      className="min-w-0 flex-1 rounded bg-black/40 px-1.5 py-0.5 text-sm text-white outline-none ring-1 ring-[var(--accent)]"
                     />
                   ) : (
                     <span className="min-w-0 flex-1 truncate text-sm text-gray-200">
@@ -609,14 +623,25 @@ export default function ChatPage() {
             <div className="h-9 w-9" />
           )}
           <span className="text-sm font-semibold tracking-wide text-gray-200">Ergonomia</span>
-          <button
-            type="button"
-            onClick={handleNewChat}
-            className="grid h-9 w-9 place-items-center rounded-lg text-gray-300 transition hover:bg-white/10"
-            aria-label="Neuer Chat"
-          >
-            <SquarePen size={18} />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="grid h-9 w-9 place-items-center rounded-lg text-gray-300 transition hover:bg-white/10"
+              aria-label={theme === "blue" ? "Zu Orange wechseln" : "Zu Blau wechseln"}
+              title={theme === "blue" ? "Theme: Blau (zu Orange wechseln)" : "Theme: Orange (zu Blau wechseln)"}
+            >
+              <Palette size={18} className="text-[var(--accent-hover)]" />
+            </button>
+            <button
+              type="button"
+              onClick={handleNewChat}
+              className="grid h-9 w-9 place-items-center rounded-lg text-gray-300 transition hover:bg-white/10"
+              aria-label="Neuer Chat"
+            >
+              <SquarePen size={18} />
+            </button>
+          </div>
         </header>
 
         {hasConversation ? (
@@ -631,7 +656,7 @@ export default function ChatPage() {
                     <div
                       className={`max-w-2xl rounded-2xl px-4 py-3 ${
                         m.role === "user"
-                          ? "bg-violet-600 text-white"
+                          ? "bg-[var(--accent)] text-white"
                           : "border border-white/10 bg-white/5 text-gray-100"
                       }`}
                     >
@@ -648,7 +673,7 @@ export default function ChatPage() {
                                 href={s.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-1 rounded-full bg-white/10 px-2 py-1 text-xs text-violet-300 transition hover:bg-white/20"
+                                className="flex items-center gap-1 rounded-full bg-white/10 px-2 py-1 text-xs text-[var(--accent-soft)] transition hover:bg-white/20"
                               >
                                 <ExternalLink size={10} /> {s.title}
                               </a>
@@ -662,7 +687,7 @@ export default function ChatPage() {
                 {isLoading && (
                   <div className="flex justify-start">
                     <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                      <Loader2 className="animate-spin text-violet-400" size={18} />
+                      <Loader2 className="animate-spin text-[var(--accent-hover)]" size={18} />
                       <span className="text-sm text-gray-400">Ergonomia denkt nach...</span>
                     </div>
                   </div>
@@ -694,7 +719,7 @@ export default function ChatPage() {
                 className="aurora-glow pointer-events-none absolute left-1/2 top-7 h-64 w-[170%] max-w-[1200px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
                 style={{
                   background:
-                    "radial-gradient(ellipse at center, rgba(56,120,255,0.75) 0%, rgba(99,102,241,0.5) 40%, rgba(56,120,255,0) 70%)",
+                    "radial-gradient(ellipse at center, var(--glow-start) 0%, var(--glow-mid) 40%, var(--glow-end) 70%)",
                 }}
               />
               <div className="relative">{composer}</div>
