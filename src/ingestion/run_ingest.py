@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional
 from src.config import settings
 from src.ingestion.crawl_seeds import build_crawl_seeds
 from src.ingestion.snapshot_writer import SnapshotWriter
-from src.ingestion.text_chunker import TextChunker
+from src.ingestion.text_chunker import TextChunker, TokenTextChunker
 from src.ingestion.web_crawler import WebCrawler
 from src.vectorstore.chroma_store import ChromaStore
 
@@ -47,7 +47,13 @@ def run_crawl_and_ingest(
         max_pages=mp,
         polite_delay_sec=settings.crawl_polite_delay_sec,
     )
-    chunker = TextChunker(chunk_size=settings.chunk_size, chunk_overlap=settings.chunk_overlap)
+    if settings.chunker_type == "token":
+        chunker = TokenTextChunker(
+            max_tokens=settings.chunker_max_tokens,
+            overlap_tokens=settings.chunker_overlap_tokens,
+        )
+    else:
+        chunker = TextChunker(chunk_size=settings.chunk_size, chunk_overlap=settings.chunk_overlap)
 
     snap_dir = snapshot_dir or settings.scraped_snapshot_dir
 

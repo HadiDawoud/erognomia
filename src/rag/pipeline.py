@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import Any, Dict, Iterator, List
+from typing import Any, Dict, Iterator, List, Optional
 
 import logging
 
@@ -70,7 +70,8 @@ class RAGPipeline:
                 
         return deduped[:settings.retrieval_k + 2]
 
-    def query(self, user_query: str, history: List[Dict[str, str]] = []) -> Dict[str, Any]:
+    def query(self, user_query: str, history: Optional[List[Dict[str, str]]] = None) -> Dict[str, Any]:
+        history = history or []
         # Fast path
         analysis = self.analyzer.analyze(user_query)
         if analysis:
@@ -99,7 +100,8 @@ class RAGPipeline:
             "classification": classification
         }
 
-    def stream_query(self, user_query: str, history: List[Dict[str, str]] = []) -> Iterator[Dict[str, Any]]:
+    def stream_query(self, user_query: str, history: Optional[List[Dict[str, str]]] = None) -> Iterator[Dict[str, Any]]:
+        history = history or []
         # Fast path
         analysis = self.analyzer.analyze(user_query)
         if analysis:

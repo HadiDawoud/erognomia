@@ -27,9 +27,18 @@ class Settings(BaseSettings):
     crawl_polite_delay_sec: float = 0.35
     chunk_size: int = 1000
     chunk_overlap: int = 200
+    chunker_type: str = "character"  # "character" or "token"
+    chunker_max_tokens: int = 512
+    chunker_overlap_tokens: int = 50
 
     scraped_snapshot_dir: str = "./data/scraped"
     extra_seed_urls: str = ""
+
+    # CORS Configuration
+    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+
+    # Chat History Configuration
+    chat_history_retention_days: int = 90
 
     # RAG Configuration
     retrieval_k: int = 8

@@ -8,6 +8,7 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     history: List[ChatMessage] = []
+    session_id: Optional[str] = None
 
 class Source(BaseModel):
     url: str
@@ -17,6 +18,27 @@ class ChatResponse(BaseModel):
     answer: str
     sources: List[Source]
     message_id: Optional[str] = None
+    session_id: Optional[str] = None
+
+class SessionCreate(BaseModel):
+    title: Optional[str] = None
+
+class SessionInfo(BaseModel):
+    id: str
+    title: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    last_summarized_at: Optional[str] = None
+    user_edited: bool = False
+
+class SessionRename(BaseModel):
+    title: str
+
+class SessionMessage(BaseModel):
+    role: str
+    content: str
+    sources: List[Source] = []
+    timestamp: Optional[str] = None
 
 class IngestRequest(BaseModel):
     seed_url: Optional[str] = Field(

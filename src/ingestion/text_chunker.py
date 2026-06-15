@@ -1,6 +1,9 @@
 import hashlib
+import logging
 from typing import Any, Dict, List
 from urllib.parse import urlparse
+
+logger = logging.getLogger(__name__)
 
 
 class TextChunker:
@@ -53,6 +56,65 @@ class TextChunker:
             if start < 0:
                 start = 0
             if end == len(text):
+                break
+
+        return chunks
+
+
+class TokenTextChunker:
+    """Token-aware text chunker using tiktoken for more precise splits."""
+
+    def __init__(self, max_tokens: int = 512, overlap_tokens: int = 50, encoding: str = "cl100k_base"):
+        self.max_tokens = max_tokens
+        self.overlap_tokens = overlap_tokens
+        try:
+            import tiktoken
+            self.encoder = tiktoken.get_encoding(encoding)
+        except ImportError:
+            logger.warning("tiktoken not installed, falling back to character-based chunking")
+            self.encoder = None
+
+    def chunk_document(self, doc: Dict[str, Any]) -> List[Dict[str, Any]]:
+        if not self.encoder:
+            fallback = TextChunker(self.max_tokens * 4, self.overlap_tokens * 4)
+            return fallback.chunk_document(doc)
+
+        text = doc["content"]
+        url = doc["url"]
+        title = doc["title"]
+        content_hash = doc["content_hash"]
+        path = urlparse(url).path or "/"
+        tokens = self.encoder.encode(text)
+        chunks = []
+        chunk_idx = 0
+        start = 0
+
+        while start < len(tokens):
+            end = start + self.max_tokens
+            if end > len(tokens):
+                end = len(tokens)
+
+            chunk_tokens = tokens[start:end]
+            chunk_text = self.encoder.decode(chunk_tokens).strip()
+            if chunk_text:
+                chunks.append({
+                    "id": f"{hashlib.sha256(url.encode()).hexdigest()}_t{chunk_idx}",
+                    "text": chunk_text,
+                    "metadata": {
+                        "source": url,
+                        "title": title,
+                        "path": path,
+                        "chunk_id": chunk_idx,
+                        "content_hash": content_hash,
+                        "timestamp": doc["timestamp"],
+                    }
+                })
+                chunk_idx += 1
+
+            start = end - self.overlap_tokens
+            if start <= 0:
+                start = 0
+            if end >= len(tokens):
                 break
 
         return chunks

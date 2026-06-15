@@ -3,7 +3,7 @@ import logging
 import re
 import time
 from typing import Any, Dict, Iterator, List, Optional, Set, Tuple
-from urllib.parse import urlparse, urlunparse
+from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -12,37 +12,14 @@ from src.ingestion.script_paths import (
     discover_urls_from_html,
     supplemental_text_from_scripts,
 )
+from src.ingestion.utils import normalize_url
 
 logger = logging.getLogger(__name__)
 
 
-def normalize_url(raw: str, default_scheme: str = "https") -> str:
-    """Canonical form for deduplication: lowercase host, drop fragment, trim trailing slash on path (keep query)."""
-    raw = (raw or "").strip()
-    if not raw:
-        return ""
-    parsed = urlparse(raw)
-    scheme = (parsed.scheme or default_scheme).lower()
-    netloc = (parsed.netloc or "").lower()
-    path = parsed.path or "/"
-    query = parsed.query
-    if not netloc and parsed.path:
-        p2 = urlparse(f"{scheme}:{raw}" if raw.startswith("//") else raw)
-        scheme = (p2.scheme or default_scheme).lower()
-        netloc = (p2.netloc or "").lower()
-        path = p2.path or "/"
-        query = p2.query
-    if scheme == "https" and netloc.endswith(":443"):
-        netloc = netloc[:-4]
-    if scheme == "http" and netloc.endswith(":80"):
-        netloc = netloc[:-3]
-    if path != "/" and path.endswith("/"):
-        path = path.rstrip("/")
-    return urlunparse((scheme, netloc, path, "", query, ""))
-
-
 class WebScraper:
-    def __init__(self):
+    def __init__(self, timeout: int = 30):
+        self.timeout = timeout
         self.session = requests.Session()
         self.session.headers.update(
             {
@@ -50,6 +27,10 @@ class WebScraper:
                 "Accept": "text/html,application/xhtml+xml",
             }
         )
+
+    def _get(self, url: str, **kwargs) -> requests.Response:
+        kwargs.setdefault("timeout", self.timeout)
+        return self.session.get(url, **kwargs)
 
     def clean_html(self, html: str) -> str:
         soup = BeautifulSoup(html, "lxml")
@@ -117,7 +98,7 @@ class WebScraper:
 
     def scrape(self, url: str) -> Optional[Dict[str, Any]]:
         try:
-            response = self.session.get(url, timeout=30)
+            response = self._get(url)
             response.raise_for_status()
             doc, _ = self.fetch_and_process(url, response)
             return doc
@@ -197,7 +178,7 @@ class WebCrawler:
             logger.info("Crawling: %s (depth %s)", url, depth)
 
             try:
-                response = self.scraper.session.get(url, timeout=30)
+                response = self.scraper._get(url)
                 response.raise_for_status()
             except Exception as e:
                 logger.error("Fetch failed %s: %s", url, e)

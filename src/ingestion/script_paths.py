@@ -10,6 +10,8 @@ import re
 from typing import Iterable, Set
 from urllib.parse import urljoin, urlparse
 
+from src.ingestion.utils import normalize_url
+
 _NAME_RE = re.compile(r"name\s*:\s*['\"]([^'\"]{2,200})['\"]")
 _LINK_RE = re.compile(r"""link\s*:\s*['\"]([^'\"]+)['\"]""", re.IGNORECASE)
 _STRING_PATH_RE = re.compile(r"""['\"](/pages/[a-zA-Z0-9_./\-]+(?:\.html)?)['\"]""")
@@ -60,8 +62,6 @@ def discover_urls_from_html(html: str, page_url: str, domain_lower: str) -> Set[
             if path and path != "/":
                 out.add(f"{base}{path}")
 
-    # Late import avoids circular import while web_crawler loads this module.
-    from src.ingestion.web_crawler import normalize_url
     for rx in (_LINK_RE,):
         for m in rx.finditer(html):
             raw = m.group(1).strip()
