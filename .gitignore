@@ -20,5 +20,16 @@ chroma_db/
 *.db
 logs/
 
+# LaTeX
+report/*.aux
+report/*.log
+report/*.out
+report/*.toc
+report/*.nav
+report/*.snm
+report/*.vrb
+report/chapters/*.aux
+
 # Misc
 .gemini/
+.ruff_cache/

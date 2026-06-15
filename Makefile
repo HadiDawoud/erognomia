@@ -1,4 +1,4 @@
-.PHONY: setup ingest api frontend test lint
+.PHONY: setup ingest api frontend test lint report slides
 
 setup:
 	pip install -r requirements.txt
@@ -18,3 +18,9 @@ test:
 
 lint:
 	ruff check .
+
+report:
+	cd report && pdflatex -interaction=nonstopmode main.tex && pdflatex -interaction=nonstopmode main.tex
+
+slides:
+	cd report && pdflatex -interaction=nonstopmode presentation.tex && pdflatex -interaction=nonstopmode presentation.tex
