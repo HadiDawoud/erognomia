@@ -49,6 +49,46 @@ function getApiBase(): string {
   return "http://127.0.0.1:8001";
 }
 
+/**
+ * Minimal typings for the browser-native Web Speech API. On macOS Safari this is
+ * backed by the on-device Apple speech engine, so no external STT service is needed.
+ */
+interface SpeechRecognitionAlternativeLike {
+  transcript: string;
+}
+interface SpeechRecognitionResultLike {
+  0: SpeechRecognitionAlternativeLike;
+  isFinal: boolean;
+}
+interface SpeechRecognitionResultListLike {
+  length: number;
+  [index: number]: SpeechRecognitionResultLike;
+}
+interface SpeechRecognitionEventLike {
+  resultIndex: number;
+  results: SpeechRecognitionResultListLike;
+}
+interface SpeechRecognitionLike {
+  lang: string;
+  interimResults: boolean;
+  continuous: boolean;
+  onresult: ((event: SpeechRecognitionEventLike) => void) | null;
+  onerror: ((event: { error?: string }) => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+type SpeechRecognitionCtor = new () => SpeechRecognitionLike;
+
+function getSpeechRecognitionCtor(): SpeechRecognitionCtor | null {
+  if (typeof window === "undefined") return null;
+  const w = window as unknown as {
+    SpeechRecognition?: SpeechRecognitionCtor;
+    webkitSpeechRecognition?: SpeechRecognitionCtor;
+  };
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+}
+
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([GREETING]);
   const [input, setInput] = useState("");
@@ -60,8 +100,12 @@ export default function ChatPage() {
   const [editingTitle, setEditingTitle] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [search, setSearch] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const speechBaseRef = useRef("");
   const API_BASE = getApiBase();
 
   const hasConversation = messages.some((m) => m.role === "user") || isLoading;
@@ -105,6 +149,54 @@ export default function ChatPage() {
     el.style.height = "auto";
     el.style.height = `${Math.min(el.scrollHeight, 200)}px`;
   }, [input]);
+
+  useEffect(() => {
+    setSpeechSupported(getSpeechRecognitionCtor() !== null);
+    return () => {
+      recognitionRef.current?.stop();
+    };
+  }, []);
+
+  const stopListening = useCallback(() => {
+    recognitionRef.current?.stop();
+  }, []);
+
+  const toggleListening = () => {
+    if (isLoading) return;
+    if (isListening) {
+      stopListening();
+      return;
+    }
+    const Ctor = getSpeechRecognitionCtor();
+    if (!Ctor) return;
+
+    const recognition = new Ctor();
+    recognition.lang = "de-DE";
+    recognition.interimResults = true;
+    recognition.continuous = true;
+    // Keep whatever the user already typed and append the dictation to it.
+    speechBaseRef.current = input ? `${input.trim()} ` : "";
+
+    recognition.onresult = (event: SpeechRecognitionEventLike) => {
+      let transcript = "";
+      for (let i = 0; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      setInput((speechBaseRef.current + transcript).replace(/\s+/g, " ").trimStart());
+    };
+    recognition.onerror = () => {
+      setIsListening(false);
+    };
+    recognition.onend = () => {
+      setIsListening(false);
+      recognitionRef.current = null;
+      textareaRef.current?.focus();
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+    setIsListening(true);
+  };
 
   const handleNewChat = () => {
     if (isLoading) return;
@@ -181,6 +273,7 @@ export default function ChatPage() {
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
+    if (isListening) stopListening();
     const userMessage = input.trim();
     setInput("");
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
@@ -312,8 +405,22 @@ export default function ChatPage() {
           </span>
           <button
             type="button"
-            title="Spracheingabe (bald verfügbar)"
-            className="grid h-9 w-9 place-items-center rounded-full text-gray-300 transition hover:bg-white/10"
+            onClick={toggleListening}
+            disabled={!speechSupported || isLoading}
+            title={
+              !speechSupported
+                ? "Spracheingabe wird von diesem Browser nicht unterstützt"
+                : isListening
+                  ? "Aufnahme stoppen"
+                  : "Spracheingabe starten"
+            }
+            aria-label={isListening ? "Aufnahme stoppen" : "Spracheingabe starten"}
+            aria-pressed={isListening}
+            className={`grid h-9 w-9 place-items-center rounded-full transition disabled:cursor-not-allowed disabled:text-gray-600 disabled:hover:bg-transparent ${
+              isListening
+                ? "animate-pulse bg-red-500/20 text-red-400"
+                : "text-gray-300 hover:bg-white/10"
+            }`}
           >
             <Mic size={18} />
           </button>
