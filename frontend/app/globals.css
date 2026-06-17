@@ -26,9 +26,9 @@
 }
 
 [data-theme="orange"] {
-  --accent: #ea580c;
-  --accent-hover: #f97316;
-  --accent-soft: #fdba74;
+  --accent: #cf7328;
+  --accent-hover: #e2842f;
+  --accent-soft: #f2b483;
   --glow-start: rgba(255, 140, 40, 0.75);
   --glow-mid: rgba(249, 115, 22, 0.5);
   --glow-end: rgba(255, 140, 40, 0);

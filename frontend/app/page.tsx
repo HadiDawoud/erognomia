@@ -598,11 +598,17 @@ export default function ChatPage() {
             })}
           </div>
 
-          <div className="flex items-center gap-2 border-t border-white/5 p-4 text-xs text-gray-400">
-            <div
-              className={`h-2 w-2 rounded-full ${health === "ok" ? "bg-green-500" : "bg-red-500"}`}
-            />
-            API: {health === "ok" ? "Online" : "Offline"}
+          <div className="border-t border-white/5 px-4 pb-3 pt-4">
+            <div className="flex items-center gap-2 text-xs text-gray-400">
+              <div
+                className={`h-2 w-2 rounded-full ${health === "ok" ? "bg-green-500" : "bg-red-500"}`}
+              />
+              API: {health === "ok" ? "Online" : "Offline"}
+            </div>
+            <p className="mt-2 text-[10px] tracking-wide text-gray-600">
+              Developed by{" "}
+              <span className="text-gray-500">Dawoud, Hatem &amp; Albarkawi</span>
+            </p>
           </div>
         </aside>
       )}
@@ -707,7 +713,15 @@ export default function ChatPage() {
         ) : (
           <div className="flex flex-1 flex-col items-center justify-center px-4">
             <div className="mb-8 flex items-center gap-5">
-              <h1 className="text-5xl font-bold tracking-tight text-white">Ergonomia</h1>
+              <div className="flex items-center gap-3 text-5xl font-bold text-white">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/irl-logo.png"
+                  alt="Immersive Reality Lab Logo"
+                  className="h-[1.35em] w-[1.35em] object-contain"
+                />
+                <h1 className="tracking-tight">Ergonomia</h1>
+              </div>
               <div className="h-12 w-px bg-white/15" />
               <p className="max-w-xs text-sm leading-relaxed text-gray-400">
                 Dein KI-Assistent für das Immersive Reality Lab. Frag mich alles rund ums IRL.
