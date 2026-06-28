@@ -33,6 +33,7 @@ class Settings(BaseSettings):
 
     scraped_snapshot_dir: str = "./data/scraped"
     extra_seed_urls: str = ""
+    ingest_js_data: bool = True
 
     # CORS Configuration
     cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"

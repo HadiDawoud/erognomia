@@ -17,6 +17,7 @@ class TextChunker:
         title = doc["title"]
         content_hash = doc["content_hash"]
         path = urlparse(url).path or "/"
+        extra_metadata = doc.get("metadata") or {}
         chunks = []
         
         # Simple recursive character splitting logic
@@ -38,17 +39,19 @@ class TextChunker:
 
             chunk_text = text[start:end].strip()
             if chunk_text:
+                metadata = {
+                    "source": url,
+                    "title": title,
+                    "path": path,
+                    "chunk_id": chunk_idx,
+                    "content_hash": content_hash,
+                    "timestamp": doc["timestamp"],
+                }
+                metadata.update(extra_metadata)
                 chunks.append({
                     "id": f"{hashlib.sha256(url.encode()).hexdigest()}_{chunk_idx}",
                     "text": chunk_text,
-                    "metadata": {
-                        "source": url,
-                        "title": title,
-                        "path": path,
-                        "chunk_id": chunk_idx,
-                        "content_hash": content_hash,
-                        "timestamp": doc["timestamp"],
-                    }
+                    "metadata": metadata,
                 })
                 chunk_idx += 1
             
@@ -84,6 +87,7 @@ class TokenTextChunker:
         title = doc["title"]
         content_hash = doc["content_hash"]
         path = urlparse(url).path or "/"
+        extra_metadata = doc.get("metadata") or {}
         tokens = self.encoder.encode(text)
         chunks = []
         chunk_idx = 0
@@ -97,17 +101,19 @@ class TokenTextChunker:
             chunk_tokens = tokens[start:end]
             chunk_text = self.encoder.decode(chunk_tokens).strip()
             if chunk_text:
+                metadata = {
+                    "source": url,
+                    "title": title,
+                    "path": path,
+                    "chunk_id": chunk_idx,
+                    "content_hash": content_hash,
+                    "timestamp": doc["timestamp"],
+                }
+                metadata.update(extra_metadata)
                 chunks.append({
                     "id": f"{hashlib.sha256(url.encode()).hexdigest()}_t{chunk_idx}",
                     "text": chunk_text,
-                    "metadata": {
-                        "source": url,
-                        "title": title,
-                        "path": path,
-                        "chunk_id": chunk_idx,
-                        "content_hash": content_hash,
-                        "timestamp": doc["timestamp"],
-                    }
+                    "metadata": metadata,
                 })
                 chunk_idx += 1
 

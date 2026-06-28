@@ -30,10 +30,17 @@ class RAGPipeline:
 
     def retrieve_context(self, query: str, classification: Dict[str, Any]) -> List[Dict[str, Any]]:
         results = []
+        pub_filter = {"doc_type": "publication"} if classification.get("category") == "publication" else None
         
         # 1. Semantic search
-        semantic_results = self.vector_store.similarity_search(query, k=settings.retrieval_k)
+        semantic_results = self.vector_store.similarity_search(
+            query, k=settings.retrieval_k, filter_metadata=pub_filter
+        )
         results.extend(semantic_results)
+        if pub_filter and len(semantic_results) < settings.retrieval_k:
+            results.extend(
+                self.vector_store.similarity_search(query, k=settings.retrieval_k)
+            )
 
         ent = classification.get("entity_name")
         if isinstance(ent, str):
@@ -44,8 +51,10 @@ class RAGPipeline:
         # 2. Keyword search if needed
         if classification.get("needs_keyword_search") and classification.get("search_keywords"):
             for kw in classification["search_keywords"]:
-                kw_results = self.vector_store.keyword_search(kw, k=2)
+                kw_results = self.vector_store.keyword_search(kw, k=2, filter_metadata=pub_filter)
                 results.extend(kw_results)
+                if pub_filter:
+                    results.extend(self.vector_store.keyword_search(kw, k=2))
 
         # Person queries: boost lexical hits on full name and name parts (helps once profile pages exist in store).
         if classification.get("query_type") == "person":
