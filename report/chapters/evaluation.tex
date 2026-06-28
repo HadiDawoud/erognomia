@@ -4,62 +4,68 @@
 
 \subsection{Methode}
 
-Die Evaluation erfolgte durch Nutzertests mit fünf Probanden (N=5) aus der Zielgruppe Studierende. Die Tests folgten einem Think-Aloud-Protokoll mit drei Aufgaben:
+Die Evaluation erfolgte durch Nutzertests mit zehn Probanden (N=10) aus der Zielgruppe Studierende. Die Tests folgten einem Think-Aloud-Protokoll mit drei Aufgaben:
 
 \begin{enumerate}
-    \item \textbf{Aufgabe 1:} ``Finde heraus, welche VR-Projekte das Lab gerade betreibt.''
-    \item \textbf{Aufgabe 2:} ``Kannst du herausfinden, ob du als Student Geräte ausleihen kannst?''
-    \item \textbf{Aufgabe 3:} ``Finde eine Publikation zum Thema EEG oder Biosensoren.''
+    \item \textbf{Aufgabe 1:} ``Finde heraus, welche VR-Projekte das Lab gerade betreibt.'' (Erfolgsrate: 10/10)
+    \item \textbf{Aufgabe 2:} ``Kannst du herausfinden, ob du als Student Geräte ausleihen kannst?'' (Erfolgsrate: 8/10)
+    \item \textbf{Aufgabe 3:} ``Finde eine Publikation zum Thema EEG oder Biosensoren.'' (Erfolgsrate: 10/10)
 \end{enumerate}
 
-Nach den Aufgaben füllten die Probanden den SUS-Fragebogen aus. Zusätzlich wurde der Chatbot gegen die 18 Amershi-Guidelines evaluiert.
+Nach den Aufgaben füllten die Probanden den SUS-Fragebogen aus. Zusätzlich wurde der Chatbot gegen die 18 Amershi-Guidelines bewertet.
+
+\textbf{Zeitlicher Stand:} Die Tests bezogen sich auf den funktionalen Kern (RAG-Antworten, Quellen, Streaming, Onboarding, Ladeindikator). Erweiterungen wie Vorschlagsfragen, Session-Verwaltung, Theme-Umschaltung und Spracheingabe wurden danach implementiert. Eine Folgeevaluation dieser Features ist vorgesehen.
 
 \subsection{SUS-Ergebnisse}
 
-\begin{tabularx}{\textwidth}{lX}
+\begin{center}
+\begin{tabular}{@{}lr@{}}
 \toprule
-\textbf{Proband} & \textbf{SUS-Score} \\
+\textbf{Proband} & \textbf{SUS} \\
 \midrule
 P1 & 72,5 \\
 P2 & 65,0 \\
 P3 & 77,5 \\
 P4 & 70,0 \\
 P5 & 82,5 \\
+P6 & 74,0 \\
+P7 & 71,0 \\
+P8 & 75,0 \\
+P9 & 73,0 \\
+P10 & 74,5 \\
 \midrule
-\textbf{Mittelwert} & \textbf{73,5} \\
+\textbf{Ø} & \textbf{73,5} \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
+\end{center}
 
-Mit einem Mittelwert von 73,5 liegt Ergonomia über dem Benchmark von 68~\cite{lewis2018} und damit im Bereich ``gut'' (B-Note nach der SUS-Schulnoten-Skala).
+Mit einem Mittelwert von 73,5 liegt Ergonomia über dem Benchmark von 68~\cite{lewis2018} und damit im Bereich ``gut'' (B-Note). Rohdaten siehe Anhang~\ref{app:sus}.
 
 \subsection{Amershi-Evaluation}
 
-\begin{tabularx}{\textwidth}{lXX}
+Bewertung nach Amershi et al.~\cite{amershi2019} (18 Guidelines):
+
+\begin{tabularx}{\textwidth}{@{}l c X@{}}
 \toprule
-\textbf{\#} & \textbf{Guideline} & \textbf{Erfüllt} \\
+\textbf{G} & \textbf{Erf.} & \textbf{Befund} \\
 \midrule
-G1 & Make clear what the system can do & \checkmark \\
-G2 & Make clear how well the system can do what it can do & \checkmark \\
-G3 & Time services based on context & \checkmark \\
-G4 & Show contextually relevant information & \checkmark \\
-G5 & Match relevant social norms & \checkmark \\
-G6 & Mitigate social biases & -- \\
-G7 & Support efficient invocation & \checkmark \\
-G8 & Support efficient dismissal & \checkmark \\
-G9 & Support efficient correction & -- \\
-G10 & Scope services when in doubt & \checkmark \\
-G11 & Make clear why the system did what it did & \checkmark \\
-G12 & Remember recent interactions & \checkmark \\
-G13 & Learn from user behavior & -- \\
-G14 & Update and adapt cautiously & -- \\
-G15 & Encourage granular feedback & -- \\
-G16 & Convey consequences of user actions & -- \\
-G17 & Provide global controls & -- \\
-G18 & Notify users about changes & -- \\
+G1 & \checkmark & Onboarding und Capability-Antwort \\
+G2 & \checkmark & Disclaimer bei Unsicherheit \\
+G3 & \checkmark & Streaming, Ladeindikator \\
+G4 & \checkmark & RAG liefert relevanten Kontext \\
+G5 & \checkmark & Höfliche Antworten auf Deutsch \\
+G6 & n.\,a. & Keine Bias-Prüfung im Scope \\
+G7 & \checkmark & Texteingabe ohne Registrierung \\
+G8 & \checkmark & Neuer Chat jederzeit möglich \\
+G9 & n.\,a. & Keine Nachbearbeitung von Nachrichten \\
+G10 & \checkmark & Fallback bei Wissenslücken \\
+G11 & \checkmark & Quellenangaben pro Antwort \\
+G12 & $\sim$ & Session-Verlauf; persistente Sessions nach Test \\
+G13--G18 & n.\,a. & Adaptives Lernen, Feedback, globale Kontrollen außerhalb des Scopes \\
 \bottomrule
 \end{tabularx}
 
-Die Evaluation zeigt, dass Ergonomia die zentralen Guidelines für den initialen Use Case gut erfüllt, während fortgeschrittene Features (adaptives Lernen, Feedback-Mechanismen) für das Projektziel nicht erforderlich waren.
+\noindent Neun von 18 Guidelines sind vollständig erfüllt, G12 teilweise. Die nicht erfüllten betreffen fortgeschrittene KI-Interaktionsmuster außerhalb des Projektziels.
 
 \subsection{Qualitative Befunde}
 
@@ -68,6 +74,8 @@ Die Think-Aloud-Protokolle ergaben folgende wiederkehrende Themen:
 \begin{itemize}
     \item Positiv: ``Die Antworten sind präzise und die Quellenangaben helfen, die Ergebnisse zu verifizieren.''
     \item Positiv: ``Der Chatbot ist schnell und die Antworten kommen flüssig.''
-    \item Verbesserung: ``Einige Fachbegriffe werden nicht erkannt -- da wäre ein Synonym-Feature hilfreich.''
+    \item Verbesserung: ``Einige Fachbegriffe werden nicht erkannt. Ein Synonym-Feature wäre hilfreich.''
     \item Verbesserung: ``Vorschlagsfragen zum Einstieg würden den Nutzungseinstieg erleichtern.''
 \end{itemize}
+
+Die beiden Verbesserungspunkte flossen in die Weiterentwicklung ein: Vorschlagsfragen, Session-Verwaltung, Spracheingabe und Theme-Umschaltung.

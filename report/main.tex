@@ -2,8 +2,9 @@
 
 % ── Packages ──────────────────────────────────────────────────────────────
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
-\usepackage{helvet}
+\usepackage{lmodern}
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{geometry}
 \geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
@@ -14,7 +15,20 @@
 \usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{tabularx}
+\usepackage{array}
+\usepackage{etoolbox}
+\usepackage{amssymb}
 \usepackage{caption}
+
+% Kompakte Tabellen (kleinere Schrift, weniger Zellenabstand)
+\captionsetup{font=small, skip=4pt}
+\newcommand{\tablecompact}{%
+  \footnotesize%
+  \setlength{\tabcolsep}{3pt}%
+  \renewcommand{\arraystretch}{0.92}%
+}
+\AtBeginEnvironment{tabularx}{\tablecompact}
+\AtBeginEnvironment{tabular}{\tablecompact}
 
 % ── Seitenzahlen ──────────────────────────────────────────────────────────
 \pagestyle{plain}
@@ -30,7 +44,7 @@
 \makeatother
 
 % ── Metadaten ─────────────────────────────────────────────────────────────
-\title{Ergonomia -- Ein ergonomisch gestalteter KI-Chatbot\\für das Immersive Reality Lab}
+\title{Ergonomia: Ein ergonomisch gestalteter KI-Chatbot\\für das Immersive Reality Lab}
 \author{}
 \date{}
 
@@ -44,20 +58,23 @@
     \vspace{0.8cm}
     {\Large Ein ergonomisch gestalteter KI-Chatbot\\für das Immersive Reality Lab\par}
     \vspace{1.5cm}
-    {\large Projektbericht --- Software-Ergonomie (AIS-B-2-6.10)\par}
+    {\large Projektbericht zur Software-Ergonomie (AIS-B-2-6.10)\par}
     \vspace{0.5cm}
     {\large Sommersemester 2026\par}
     \vspace{2cm}
     \begin{tabular}{rl}
-        \textbf{Name:} & Vorname Nachname \\
-        \textbf{Matrikelnummer:} & 12345678 \\
+        \textbf{Name:} & Hadi Dawoud \\
+        \textbf{Matrikelnummer:} & 2210155 \\
         & \\
-        \textbf{Name:} & Vorname Nachname \\
-        \textbf{Matrikelnummer:} & 87654321 \\
+        \textbf{Name:} & Osamah Hatem \\
+        \textbf{Matrikelnummer:} & 1231431 \\
+        & \\
+        \textbf{Name:} & Mohammed Albarkawi \\
+        \textbf{Matrikelnummer:} & 1231320 \\
     \end{tabular}
     \vspace{1.5cm}\par
     {\large Hochschule Hamm-Lippstadt\par}
-    {\large Betreuer: Prof. Dr.-Ing. Jan-Niklas Voigt-Antons\par}
+    {\large Betreuerin: Julia Schorlemmer, Doktorandin\par}
     \vspace{1cm}
     {\large Abgabedatum: \today\par}
 \end{titlepage}
@@ -67,12 +84,15 @@
 \newpage
 
 %% ── Kapitel ────────────────────────────────────────────────────────────
-\include{chapters/einleitung}
-\include{chapters/problemdefinition}
-\include{chapters/theoretische_fundierung}
-\include{chapters/konzeption}
-\include{chapters/evaluation}
-\include{chapters/reflexion}
+\input{chapters/einleitung}
+\input{chapters/problemdefinition}
+\input{chapters/theoretische_fundierung}
+\input{chapters/konzeption}
+\input{chapters/evaluation}
+\input{chapters/reflexion}
+
+%% ── Anhang ─────────────────────────────────────────────────────────────
+\input{chapters/anhang}
 
 %% ── Literaturverzeichnis ───────────────────────────────────────────────
 \newpage
@@ -91,8 +111,13 @@ San Francisco: Morgan Kaufmann, 1994.
 
 \bibitem{iso9241}
 DIN EN ISO 9241-110,
-``Ergonomie der Mensch-System-Interaktion -- Teil 110: Interaktionsprinzipien,''
+``Ergonomie der Mensch-System-Interaktion, Teil 110: Interaktionsprinzipien,''
 2020.
+
+\bibitem{iso9241-210}
+DIN EN ISO 9241-210,
+``Ergonomie der Mensch-System-Interaktion, Teil 210: Menschzentrierte Gestaltung interaktiver Systeme,''
+2019.
 
 \bibitem{richter2016}
 M.~Richter und M.~Flückiger,
@@ -108,6 +133,12 @@ San Francisco: Morgan Kaufmann, 2008.
 D.~Norman,
 \emph{The Design of Everyday Things}.
 New York: Basic Books, 2013.
+
+\bibitem{lewis2020rag}
+P.~Lewis, E.~Perez, A.~Piktus, \emph{et al.},
+``Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks,''
+in \emph{Advances in Neural Information Processing Systems (NeurIPS)},
+Bd.~33, 2020.
 
 \bibitem{lewis2018}
 J.~R.~Lewis,

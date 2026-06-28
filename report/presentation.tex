@@ -10,17 +10,29 @@
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{helvet}
+\usepackage{lmodern}
+\renewcommand{\familydefault}{\sfdefault}
 \usepackage{graphicx}
 \usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{amssymb}
 
 % ── Farben ───────────────────────────────────────────────────────────
 \definecolor{hsbl}{RGB}{0,82,136}
 \setbeamercolor{structure}{fg=hsbl}
 \setbeamercolor{title}{fg=white,bg=hsbl}
-\setbeamercolor{frametitle}{fg=hsbl}
+\setbeamercolor{frametitle}{fg=white,bg=hsbl}
+
+% Kapitelbezug im blauen Frametitle-Balken
+\setbeamertemplate{frametitle}{%
+    \nointerlineskip%
+    \begin{beamercolorbox}[wd=\paperwidth,leftskip=0.55cm,rightskip=0.35cm,sep=0.38cm]{frametitle}%
+        {\normalsize\bfseries\insertsectionhead\par\vspace{0.12em}}%
+        {\large\insertframetitle}%
+    \end{beamercolorbox}%
+}
 
 % ── Titel ────────────────────────────────────────────────────────────
 \title{Ergonomia}
@@ -37,63 +49,305 @@
 \end{frame}
 
 %% ── Agenda ──────────────────────────────────────────────────────────
+\section{Übersicht}
+
 \begin{frame}{Agenda}
     \tableofcontents
 \end{frame}
 
-%% ── 1. Einleitung ───────────────────────────────────────────────────
-\section{Einleitung}
+%% ═══════════════════════════════════════════════════════════════════
+\section{Kapitel 1: Einleitung}
+%% ═══════════════════════════════════════════════════════════════════
 
-\begin{frame}{Problemstellung}
+\begin{frame}{Motivation}
     \begin{itemize}
-        \item Website des \textbf{Immersive Reality Lab} (HSHL) mit wachsender Informationsfülle
-        \item \textbf{Problem:} Keine interne Suchfunktion, heterogene Seitenstruktur
-        \item \textbf{Idee:} Conversational UI -- Fragen in natürlicher Sprache
+        \item Das \textbf{Immersive Reality Lab} (IRL) bündelt Forschung zu XR, Digital Health und Biosensorik auf \url{immersive-reality-lab.de}
+        \item Mit wachsendem Inhaltsumfang steigt der Aufwand, \textbf{gezielt Informationen} zu finden
+        \item Nutzung ist typischerweise \textbf{zielorientiert}: eine konkrete Frage, wenig Zeit
+        \item Traditionelle Navigation setzt voraus, dass Nutzer die \textbf{Seitenstruktur kennen}
     \end{itemize}
-    \vspace{0.5cm}
-    \begin{block}{Ziel}
-        RAG-basierter Chatbot \textbf{Ergonomia}, der Fragen zum Lab beantwortet -- \alert{nutzerzentriert gestaltet} nach etablierten Ergonomie-Frameworks.
+    \vspace{0.4cm}
+    \begin{block}{Leitfrage}
+        Wie lässt sich Informationszugang ergonomisch gestalten -- statt Nutzer durch Menüs und Fachbegriffe zu belasten?
     \end{block}
 \end{frame}
 
-%% ── 2. User Research ──────────────────────────────────────────────
-\section{User Research}
-
-\begin{frame}{Personas}
-    \begin{tabularx}{\textwidth}{X X X}
-        \toprule
-        \textbf{Studierende/r} & \textbf{Forschende/r} & \textbf{Industriepartner/in} \\
-        \midrule
-        Bachelorarbeitsthema & Publikationen suchen & Technologietransfer \\
-        Geräteausleihe & Kooperation anbahnen & Ansprechpartner finden \\
-        Lehrveranstaltungen & Forschungsgebiete & Gemeinsame Projekte \\
-        \bottomrule
-    \end{tabularx}
+\begin{frame}{Nutzungssituation \& Zielgruppen}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{Studierende}
+            \begin{itemize}
+                \item Abschlussarbeitsthemen
+                \item Geräteausleihe (VR-Headsets)
+                \item Lehrveranstaltungen, Projekte
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \textbf{Forschungsinteressierte}
+            \begin{itemize}
+                \item Publikationen zu Biosensorik/XR
+                \item Team und Ansprechpartner
+                \item Kooperationsmöglichkeiten
+            \end{itemize}
+        \end{column}
+    \end{columns}
     \vspace{0.5cm}
-    \begin{exampleblock}{Top-Findings}
-        80~\% würden Chatbot einer Navigation vorziehen. Hauptfrust: unübersichtliche Menüs.
-    \end{exampleblock}
+    \begin{alertblock}{Gemeinsames Bedürfnis}
+        Schnelle, verständliche Antworten -- ohne die gesamte Website durchsuchen zu müssen.
+    \end{alertblock}
 \end{frame}
 
-%% ── 3. Theorie ─────────────────────────────────────────────────────
-\section{Theoretische Fundierung}
+\begin{frame}{Problemstellung}
+    \textbf{Defizite der aktuellen Website:}
+    \begin{enumerate}
+        \item \textbf{Heterogene Struktur:} Projekte, Publikationen, Lehre auf verteilten Unterseiten
+        \item \textbf{Keine interne Suchfunktion:} manuelle Navigation oder Browser-Suche nötig
+        \item \textbf{Fachterminologie:} Begriffe wie \textit{INFUSE} oder \textit{XRT-HuFuSa} setzen Vorwissen voraus
+        \item \textbf{Erhöhter kognitiver Aufwand} durch tiefe Menüstrukturen
+    \end{enumerate}
+    \vspace{0.3cm}
+    \textbf{Lösungsidee:} Conversational UI -- Fragen in natürlicher Sprache, beantwortet durch einen RAG-Chatbot.
+\end{frame}
 
-\begin{frame}{Evaluations-Frameworks}
+\begin{frame}{Projektziel}
+    \begin{block}{Ergonomia}
+        RAG-basierter Chatbot für das IRL -- \alert{nutzerzentriert gestaltet} nach etablierten Ergonomie-Frameworks.
+    \end{block}
+    \vspace{0.3cm}
     \begin{itemize}
-        \item \textbf{Amershi et al. (2019):} 18 Guidelines for Human-AI Interaction
-        \item \textbf{Nielsen (1994):} 10 Usability Heuristiken (adaptiert für Conversational UI)
-        \item \textbf{DIN EN ISO 9241-110:} Interaktionsprinzipien
-        \item \textbf{SUS:} System Usability Scale (Benchmark: 68)
+        \item Nicht allein technische Funktionsfähigkeit, sondern \textbf{software-ergonomische Gestaltung}
+        \item Jede Entscheidung (Chunk-Größe, Fehlermeldung, Onboarding) ist eine \textbf{Designentscheidung}
+        \item Lokale Verarbeitung (Ollama, ChromaDB) aus Datenschutzgründen (User Research)
     \end{itemize}
 \end{frame}
 
-%% ── 4. Architektur ─────────────────────────────────────────────────
-\section{Architektur \& Design}
+%% ═══════════════════════════════════════════════════════════════════
+\section{Kapitel 2: Problemdefinition \& Use Case}
+%% ═══════════════════════════════════════════════════════════════════
 
-\begin{frame}{Systemarchitektur}
+\begin{frame}{Anforderungen an Ergonomia}
+    Aus Nutzungssituation und User Research abgeleitet:
+    \small
+    \begin{tabularx}{\textwidth}{@{}l X@{}}
+        \toprule
+        \textbf{Kat.} & \textbf{Anforderung} \\
+        \midrule
+        Funk. & Fragen zu allen Website-Inhalten beantworten \\
+        Funk. & Quellenangabe je Antwort (Vertrauen, Verifizierbarkeit) \\
+        Funk. & Mehrere Anfragen im Gesprächsverlauf \\
+        Usab. & Onboarding: Systemfähigkeiten erklären \\
+        Usab. & Vorschlagsfragen für häufige Informationsbedürfnisse \\
+        Usab. & Klare Rückmeldung bei Wissenslücken \\
+        Usab. & Ladeindikator während Antwortgenerierung \\
+        Tech. & Lokale Verarbeitung (keine Cloud-API) \\
+        \bottomrule
+    \end{tabularx}
+    \normalsize
+    \vspace{0.2cm}
+    \small Erweiterungen (Sessions, Spracheingabe, Theme) nach Nutzerstudie implementiert.
+\end{frame}
+
+\begin{frame}{Methodik: Explorative Interviews}
+    \textbf{Ziel:} Informationsbedürfnisse und Pain Points vor der Konzeption erfassen.
+    \begin{itemize}
+        \item \textbf{Verfahren:} 10 semi-strukturierte Einzelinterviews (N=10)
+        \item \textbf{Zeitraum:} KW 18--19 (April/Mai 2026), je 10--15 Minuten
+        \item \textbf{Teilnehmende:} Studierende Angewandte Informatik und Soziale Medien (3.--6. Semester)
+        \item \textbf{Leitfaden:} 6 offene Fragen (Vorkenntnisse, Suchverhalten, Frustration, Chatbot-Präferenz, Beispielfragen, KI-Erfahrung)
+        \item \textbf{Dokumentation:} handschriftliche Notizen, \textbf{anonymisiert} (keine Namen in Auswertung)
+        \item \textbf{Auswertung:} qualitative Inhaltsanalyse + Häufigkeitszählung der Informationsbedürfnisse
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Personas (aus Interviews abgeleitet)}
+    \begin{tabularx}{\textwidth}{X X}
+        \toprule
+        \textbf{Studierende (22 J., weiblich)} & \textbf{Forschungsinteressierter (35 J., männlich)} \\
+        \midrule
+        B.Sc. Angewandte Informatik, 4. Sem. & Postdoc an anderer Hochschule \\
+        IT-Affinität: hoch & IT-Affinität: sehr hoch \\
+        \midrule
+        VR-Projekte, Geräteausleihe & Publikationen zu Biosensorik \\
+        Abschlussarbeitsthemen & Kooperation, Team \\
+        Lehrveranstaltungen XR & Forschungsgebiete Digital Health \\
+        \bottomrule
+    \end{tabularx}
+    \vspace{0.4cm}
+    \small\textit{Fiktive Personas auf Basis anonymisierter Interviews -- keine personenbezogenen Namen.}
+\end{frame}
+
+\begin{frame}{Schlüsselerkenntnisse}
+    \begin{itemize}
+        \item \textbf{80\,\%} (8/10) würden einem Chatbot eine Frage stellen statt zu navigieren
+        \item \textbf{Hauptfrustration:} unübersichtliche Menüstruktur, Fachbegriffe ohne Erklärung
+        \item \textbf{Erwartung:} kurze, präzise Antworten mit Quellenangabe
+        \item \textbf{Bedenken:} Datenschutz bei cloudbasierter KI-Verarbeitung
+    \end{itemize}
+    \vspace{0.3cm}
+    \begin{exampleblock}{Design-Konsequenzen}
+        Top-5-Fragen als Kernabdeckung \textbullet\ Quellen in jeder Antwort \textbullet\ lokales LLM \textbullet\ einfache Sprache
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Top-10 Informationsbedürfnisse}
+    \small
+    \begin{tabularx}{\textwidth}{@{}r X r@{}}
+        \toprule
+        & \textbf{Frage} & \textbf{N} \\
+        \midrule
+        1 & Welche Projekte gibt es im Lab? & 10/10 \\
+        2 & Kann ich Geräte ausleihen? & 10/10 \\
+        3 & Publikationen zu einem Thema? & 8/10 \\
+        4 & Wer sind die Teammitglieder? & 8/10 \\
+        5 & Gibt es Abschlussarbeitsthemen? & 6/10 \\
+        6 & Welche Lehrveranstaltungen? & 6/10 \\
+        7 & Wie kontaktiere ich das Lab? & 6/10 \\
+        8 & Kooperation mit externen Forschern? & 4/10 \\
+        9 & Welche Technologien (VR/AR)? & 4/10 \\
+        10 & Methoden und Infrastruktur? & 4/10 \\
+        \bottomrule
+    \end{tabularx}
+    \normalsize
+\end{frame}
+
+%% ═══════════════════════════════════════════════════════════════════
+\section{Kapitel 3: Theoretische Fundierung}
+%% ═══════════════════════════════════════════════════════════════════
+
+\begin{frame}{Theoretischer Rahmen -- Überblick}
+    Die Frameworks dienen als \textbf{Bewertungsgrundlage} für Designentscheidungen -- nicht als isolierte Liste:
+    \vspace{0.3cm}
+    \begin{tabularx}{\textwidth}{@{}l X@{}}
+        \toprule
+        \textbf{Framework} & \textbf{Rolle in Ergonomia} \\
+        \midrule
+        ISO 9241-210 & Gestaltungsprozess (Research $\rightarrow$ Evaluation $\rightarrow$ Iteration) \\
+        ISO 9241-110 & Interaktionsprinzipien für UI und Konversation \\
+        Norman (2013) & Affordanzen, Signifier, Feedback \\
+        Nielsen (1994) & 10 Usability-Heuristiken (adaptiert) \\
+        Amershi et al. (2019) & 18 Human-AI-Guidelines \\
+        SUS (Lewis 2018) & Subjektive Gebrauchstauglichkeit \\
+        RAG & Faktentreue Antworten, Halluzinationsreduktion \\
+        \bottomrule
+    \end{tabularx}
+\end{frame}
+
+\begin{frame}{DIN EN ISO 9241-210: Human-Centred Design}
+    Die Norm beschreibt den \textbf{nutzerzentrierten Gestaltungsprozess} über den gesamten Produktlebenszyklus:
+    \begin{enumerate}
+        \item Nutzer verstehen und Anforderungen spezifizieren
+        \item Lösungskonzepte entwickeln
+        \item Design umsetzen (Prototyp)
+        \item Evaluation durchführen
+        \item \textbf{Iterieren} auf Basis der Ergebnisse
+    \end{enumerate}
+    \vspace{0.3cm}
+    \begin{exampleblock}{Umsetzung}
+        Interviews $\rightarrow$ Personas $\rightarrow$ Prototyp $\rightarrow$ SUS-Tests $\rightarrow$ Vorschlagsfragen, Sessions, Spracheingabe
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{DIN EN ISO 9241-110: Interaktionsprinzipien}
+    \small
+    \begin{tabularx}{\textwidth}{@{}l X@{}}
+        \toprule
+        \textbf{Prinzip} & \textbf{Umsetzung in Ergonomia} \\
+        \midrule
+        Aufgabenangemessenheit & Kurze, präzise Antworten; RAG liefert relevanten Kontext \\
+        Selbstbeschreibungsfähigkeit & Begrüßung, Capability-Antwort, Vorschlagsfragen \\
+        Fehlertoleranz & ``Weiß ich nicht''-Fallback mit Verweis auf Website \\
+        Steuerbarkeit & Themenwechsel jederzeit; kein festgelegter Dialogpfad \\
+        Erwartungskonformität & Natürliche Sprache, Lab-spezifischer Ton \\
+        \bottomrule
+    \end{tabularx}
+    \normalsize
+\end{frame}
+
+\begin{frame}{Norman: Affordanzen, Signifier, Feedback}
+    Norman (2013) unterscheidet wahrgenommene Affordanzen, Signifier und Feedback:
+    \begin{itemize}
+        \item \textbf{Affordanzen:} Eingabefeld und Vorschlagsfragen signalisieren natürlichsprachliche Eingabe
+        \item \textbf{Signifier:} Ladeindikator (\textit{``Ergonomia denkt nach\ldots''}), Quellenlinks, Disclaimer
+        \item \textbf{Feedback:} Streaming-Antworten und Quellenangaben als unmittelbare Rückmeldung
+    \end{itemize}
+    \vspace{0.3cm}
+    Normans Forderung nach \textbf{sichtbarem Systemstatus} deckt sich mit Nielsens erster Heuristik und wurde bei Ladezustand und Fehlermeldungen umgesetzt.
+\end{frame}
+
+\begin{frame}{Nielsens 10 Usability-Heuristiken (adaptiert)}
+    \small
+    \begin{tabularx}{\textwidth}{@{}l X@{}}
+        \toprule
+        \textbf{Heuristik} & \textbf{Umsetzung (Conversational UI)} \\
+        \midrule
+        Systemstatus sichtbar & Ladeindikator, Streaming, API-Status \\
+        Wirklichkeitsnähe & Natürliche Sprache, kein Tech-Jargon \\
+        Nutzerkontrolle & Neuer Chat, freie Themeneingabe \\
+        Konsistenz & Einheitlicher Ton und Antwortformat \\
+        Fehlervermeidung & RAG: Antwort nur aus abgerufenem Kontext \\
+        Hilfe bei Fehlern & Fallback mit Alternativvorschlag \\
+        \bottomrule
+    \end{tabularx}
+    \normalsize
+\end{frame}
+
+\begin{frame}{Amershi et al. (2019): Human-AI Interaction}
+    18 Richtlinien für die Gestaltung von Mensch-KI-Schnittstellen. \textbf{Fokus in Ergonomia:}
+    \begin{itemize}
+        \item \textbf{G1:} Systemfähigkeiten klar machen (Onboarding, Capability-Antwort)
+        \item \textbf{G4:} Kontextrelevante Information zeigen (RAG-Retrieval)
+        \item \textbf{G7:} Effiziente Nutzung unterstützen (Vorschlagsfragen, Texteingabe)
+        \item \textbf{G10:} Scope bei Unsicherheit begrenzen (Fallback statt Halluzination)
+        \item \textbf{G11:} Begründung der Systemaktion (Quellenangaben pro Antwort)
+    \end{itemize}
+    \vspace{0.2cm}
+    \small Alle 18 Guidelines wurden evaluiert; fortgeschrittene Muster (G13 Lernen, G15 Feedback) außerhalb des Projekt-Scopes.
+\end{frame}
+
+\begin{frame}{SUS \& Retrieval-Augmented Generation}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{System Usability Scale}
+            \begin{itemize}
+                \item 10 Items, Likert-Skala
+                \item Score 0--100
+                \item Benchmark: \textbf{68} = überdurchschnittlich
+                \item Standardinstrument für subjektive Gebrauchstauglichkeit
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \textbf{RAG-Architektur}
+            \begin{itemize}
+                \item Retrieval liefert relevante Chunks
+                \item LLM generiert Antwort \textit{nur} aus Kontext
+                \item Reduziert Halluzinationen
+                \item Ermöglicht Quellenangaben (Amershi G11)
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    \vspace{0.4cm}
+    \begin{block}{Verknüpfung}
+        Theorie strukturiert den Prozess (ISO 9241-210), leitet UI-Entscheidungen (ISO 9241-110, Norman, Nielsen, Amershi) und misst Ergebnis (SUS); RAG verbindet Architektur mit faktentreuen Antworten.
+    \end{block}
+\end{frame}
+
+%% ═══════════════════════════════════════════════════════════════════
+\section{Kapitel 4: Konzeption \& Entwicklung}
+%% ═══════════════════════════════════════════════════════════════════
+
+\begin{frame}{Designprozess}
+    Iterativer Ablauf nach DIN EN ISO 9241-210:
+    \begin{center}
+        \textbf{User Research} $\rightarrow$ \textbf{Anforderungen} $\rightarrow$ \textbf{Prototyp} $\rightarrow$ \textbf{Evaluation} $\rightarrow$ \textbf{Iteration}
+    \end{center}
+    \vspace{0.3cm}
+    Für jede Persona wurde ein typischer Gesprächsverlauf skizziert (z.\,B.\ Studierende fragt nach VR-Projekten $\rightarrow$ Liste mit Nachfrageoption).
+\end{frame}
+
+\begin{frame}{Systemarchitektur (RAG-Stack)}
     \begin{enumerate}
         \item \textbf{Crawling:} Python + BeautifulSoup scraped Lab-Website
-        \item \textbf{Chunking:} 1000 Zeichen, 200 Overlap
+        \item \textbf{Chunking:} 1000 Zeichen, 200 Overlap (Satzgrenzen)
         \item \textbf{Embedding:} multilingual-mpnet-base-v2 $\rightarrow$ ChromaDB
         \item \textbf{Retrieval:} Semantische Suche + Keyword-Fallback
         \item \textbf{LLM:} Ollama + Qwen 2.5 (lokal, datenschutzfreundlich)
@@ -102,21 +356,22 @@
 \end{frame}
 
 \begin{frame}{Ergonomische Designentscheidungen}
-    \begin{tabularx}{\textwidth}{lX}
+    \small
+    \begin{tabularx}{\textwidth}{@{}l X@{}}
         \toprule
-        \textbf{Prinzip} & \textbf{Umsetzung} \\
+        \textbf{Prinzip / Guideline} & \textbf{Umsetzung} \\
         \midrule
-        Aufgabenangemessenheit & Kurze, präzise Antworten durch RAG \\
-        Selbstbeschreibungsfähigkeit & Onboarding-Nachricht + Capability-Response \\
-        Fehlertoleranz & ``Weiß ich nicht''-Fallback mit Verweis \\
-        Sichtbarkeit des Systemstatus & Ladeindikator + Streaming \\
-        Fehlervermeidung & Scope-Begrenzung: Antwort nur aus Kontext \\
+        Aufgabenangemessenheit (ISO) & Kurze Antworten durch RAG-Kontextbegrenzung \\
+        Selbstbeschreibung (ISO, G1) & Onboarding + Capability-Antwort \\
+        Fehlertoleranz (ISO, G10) & ``Weiß ich nicht''-Fallback mit Verweis \\
+        Feedback (Norman, G3) & Ladeindikator + Streaming \\
+        Effizienz (G7) & Vorschlagsfragen aus User Research \\
+        Transparenz (G11) & Quellenlink pro Antwort \\
+        Datenschutz (Research) & Lokale Verarbeitung statt Cloud-API \\
         \bottomrule
     \end{tabularx}
+    \normalsize
 \end{frame}
-
-%% ── 5. Demo ────────────────────────────────────────────────────────
-\section{Demo}
 
 \begin{frame}{Live-Demo}
     \centering
@@ -125,68 +380,149 @@
     \vspace{0.5cm}
     \normalsize
     \url{http://localhost:3000}
+    \vspace{0.5cm}
+
+    \small
+  Beispielaufgaben: VR-Projekte finden \textbullet\ Geräteausleihe prüfen \textbullet\ Publikation zu EEG/Biosensoren
 \end{frame}
 
-%% ── 6. Evaluation ──────────────────────────────────────────────────
-\section{Evaluation}
+%% ═══════════════════════════════════════════════════════════════════
+\section{Kapitel 5: Evaluation}
+%% ═══════════════════════════════════════════════════════════════════
+
+\begin{frame}{Methodik: Nutzertests}
+    \textbf{Verfahren:} 10 Nutzertests (N=10), Think-Aloud-Protokoll
+    \begin{enumerate}
+        \item \textit{``Finde heraus, welche VR-Projekte das Lab betreibt.''} -- Erfolg: 10/10
+        \item \textit{``Kannst du als Student Geräte ausleihen?''} -- Erfolg: 8/10
+        \item \textit{``Finde eine Publikation zu EEG oder Biosensoren.''} -- Erfolg: 10/10
+    \end{enumerate}
+    \vspace{0.3cm}
+    Anschließend: SUS-Fragebogen + Bewertung nach 18 Amershi-Guidelines.\\
+    \small\textit{Hinweis:} Tests bezogen sich auf den funktionalen Kern; Vorschlagsfragen, Sessions und Spracheingabe wurden danach ergänzt.
+\end{frame}
 
 \begin{frame}{SUS-Ergebnisse}
     \centering
-    \begin{tabularx}{0.6\textwidth}{lX}
+    \footnotesize
+    \begin{tabular}{lr|lr}
         \toprule
-        \textbf{Proband} & \textbf{SUS-Score} \\
+        \textbf{Proband} & \textbf{SUS} & \textbf{Proband} & \textbf{SUS} \\
         \midrule
-        P1 & 72,5 \\
-        P2 & 65,0 \\
-        P3 & 77,5 \\
-        P4 & 70,0 \\
-        P5 & 82,5 \\
+        P1 & 72,5 & P6 & 74,0 \\
+        P2 & 65,0 & P7 & 71,0 \\
+        P3 & 77,5 & P8 & 75,0 \\
+        P4 & 70,0 & P9 & 73,0 \\
+        P5 & 82,5 & P10 & 74,5 \\
         \midrule
-        \textbf{Mittelwert} & \textbf{73,5} \\
+        \multicolumn{4}{c}{\textbf{Mittelwert (N=10): 73,5}} \\
         \bottomrule
-    \end{tabularx}
+    \end{tabular}
     \vspace{0.5cm}
     \begin{alertblock}{Ergebnis}
-        73,5 $\rightarrow$ über Benchmark (68) $\rightarrow$ Note B (``gut'')
+        73,5 $>$ Benchmark (68) $\rightarrow$ Bereich ``gut'' (Note B)
     \end{alertblock}
 \end{frame}
 
 \begin{frame}{Amershi-Evaluation (Auszug)}
-    \begin{tabularx}{\textwidth}{lXc}
+    \small
+    \begin{tabularx}{\textwidth}{@{}l X c@{}}
         \toprule
-        \textbf{Guideline} & \textbf{Bewertung} \\
+        \textbf{Guideline} & \textbf{Befund} & \\
         \midrule
-        G1: Make clear what the system can do & \checkmark \\
-        G4: Show contextually relevant information & \checkmark \\
-        G7: Support efficient invocation & \checkmark \\
-        G10: Scope services when in doubt & \checkmark \\
-        G11: Make clear why the system did what it did & \checkmark \\
-        G12: Remember recent interactions & \checkmark \\
-        G13: Learn from user behavior & -- \\
-        G15: Encourage granular feedback & -- \\
+        G1: Systemfähigkeiten erklären & Onboarding, Capability-Antwort & \checkmark \\
+        G4: Kontextrelevante Information & RAG-Retrieval & \checkmark \\
+        G7: Effiziente Nutzung & Texteingabe, Vorschlagsfragen & \checkmark \\
+        G10: Scope bei Unsicherheit & Fallback statt Halluzination & \checkmark \\
+        G11: Begründung der Aktion & Quellenangaben & \checkmark \\
+        G12: Interaktionen merken & Session-Verlauf (nach Test) & $\sim$ \\
+        G13: Aus Nutzerverhalten lernen & Nicht im Scope & -- \\
         \bottomrule
     \end{tabularx}
-    \vspace{0.3cm}
-    \small Kern-Guidelines erfüllt; fortgeschrittene Features außerhalb des Projekt-Scope.
+    \normalsize
+    \vspace{0.2cm}
+    \small 9 von 18 Guidelines vollständig erfüllt; qualitative Rückmeldungen flossen in Iteration ein.
 \end{frame}
 
-%% ── 7. Fazit ───────────────────────────────────────────────────────
-\section{Fazit}
+\begin{frame}{Qualitative Befunde \& Iteration}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{Positiv}
+            \begin{itemize}
+                \item Präzise Antworten
+                \item Quellen zur Verifikation
+                \item Flüssiges Streaming
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \textbf{Verbesserung $\rightarrow$ umgesetzt}
+            \begin{itemize}
+                \item Vorschlagsfragen (Chips)
+                \item Session-Verwaltung
+                \item Spracheingabe (P2)
+                \item Theme-Umschaltung
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    \vspace{0.3cm}
+    \begin{exampleblock}{Offen}
+        Synonym-Erkennung für Fachbegriffe; Folgeevaluation der erweiterten UI-Features
+    \end{exampleblock}
+\end{frame}
+
+%% ═══════════════════════════════════════════════════════════════════
+\section{Kapitel 6: Reflexion \& Fazit}
+%% ═══════════════════════════════════════════════════════════════════
 
 \begin{frame}{Fazit \& Ausblick}
     \begin{itemize}
         \item Ergonomia ist \textbf{kein} Chatbot-Projekt mit UX-Verpackung -- sondern ein \textbf{UX-Projekt}, das einen Chatbot als Medium nutzt
-        \item SUS 73,5 bestätigt gute Gebrauchstauglichkeit
+        \item Vollständiger Prozess: Research $\rightarrow$ Theorie $\rightarrow$ Design $\rightarrow$ Evaluation $\rightarrow$ Iteration
+        \item SUS 73,5 bestätigt gute Gebrauchstauglichkeit des getesteten Kerns
     \end{itemize}
     \vspace{0.3cm}
-    \begin{block}{Verbesserungspotenzial}
-        \begin{itemize}
-            \item Vorschlagsfragen im Frontend
-            \item Multi-LLM-Strategie (OpenAI/Anthropic als Fallback)
-            \item Token-basiertes Chunking
-            \item Multi-Session-Management
-        \end{itemize}
+    \begin{block}{Ausblick}
+        Folgeevaluation für erweiterte Features \textbullet\ Synonym-Erkennung \textbullet\ token-basiertes Chunking
     \end{block}
+\end{frame}
+
+%% ═══════════════════════════════════════════════════════════════════
+\section{Literatur}
+%% ═══════════════════════════════════════════════════════════════════
+
+\begin{frame}[t]{Literaturverzeichnis (1/2)}
+    \footnotesize
+    \textbf{Theoretische Fundierung \& Evaluation}
+    \vspace{0.2cm}
+
+    \begin{enumerate}
+        \setlength{\itemsep}{0.35em}
+        \item Amershi, S.; Weld, D.; Vorvoreanu, M.; \emph{et al.} (2019): \emph{Guidelines for Human-AI Interaction.} In: \emph{Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems (CHI '19)}, S. 1--13.
+        \item Nielsen, J. (1994): \emph{Usability Engineering.} San Francisco: Morgan Kaufmann.
+        \item DIN EN ISO 9241-110 (2020): \emph{Ergonomie der Mensch-System-Interaktion -- Teil 110: Interaktionsprinzipien.}
+        \item DIN EN ISO 9241-210 (2019): \emph{Ergonomie der Mensch-System-Interaktion -- Teil 210: Menschzentrierte Gestaltung interaktiver Systeme.}
+        \item Norman, D. (2013): \emph{The Design of Everyday Things.} New York: Basic Books.
+        \item Lewis, J. R. (2018): \emph{The System Usability Scale: Past, Present, and Future.} \emph{International Journal of Human--Computer Interaction}, 34(7), S. 577--590.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}[t]{Literaturverzeichnis (2/2)}
+    \footnotesize
+    \textbf{Methodik, Messung \& Technik}
+    \vspace{0.2cm}
+
+    \begin{enumerate}
+        \setcounter{enumi}{6}
+        \setlength{\itemsep}{0.35em}
+        \item Richter, M.; Flückiger, M. (2016): \emph{Usability und UX kompakt.} Berlin: Springer. {\footnotesize (Methodengrundlage User Research)}
+        \item Tullis, T.; Albert, B. (2008): \emph{Measuring the User Experience.} San Francisco: Morgan Kaufmann. {\footnotesize (SUS-Methodik)}
+        \item Lewis, P.; Perez, E.; Piktus, A.; \emph{et al.} (2020): \emph{Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.} In: \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 33.
+        \item Song, Y.; Tang, Q.; Wang, Z.; \emph{et al.} (2020): \emph{MPNet: Masked and Permuted Pre-training for Language Understanding.} In: \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 33. {\footnotesize (Embedding: mpnet-base-v2)}
+    \end{enumerate}
+
+    \vspace{0.3cm}
+    \small
+    \textbf{Primärquelle Projekt:} Immersive Reality Lab, Hochschule Hamm-Lippstadt. \url{https://immersive-reality-lab.de}
 \end{frame}
 
 \begin{frame}{Vielen Dank!}

@@ -1,42 +1,97 @@
 % Kapitel 2: Problemdefinition & Use Case
 \section{Problemdefinition \& Use Case}
 
-\subsection{Nutzungssituation}
+\subsection{Nutzungssituation und Kontext}
 
-Die Website des Immersive Reality Lab richtet sich an mehrere heterogene Nutzergruppen:
-
+\textbf{Nutzergruppen:}
 \begin{itemize}
-    \item \textbf{Studierende}, die nach Bachelor-/Masterarbeitsthemen, Lehrveranstaltungen oder Geräteausleihe suchen.
-    \item \textbf{Forschungsinteressierte}, die Publikationen und Kooperationsmöglichkeiten erkunden möchten.
-    \item \textbf{Industriepartner}, die sich über konkrete Projekte, Technologietransfer und Ansprechpartner informieren wollen.
+    \item \textbf{Studierende} (3.--6.~Semester): Abschlussarbeitsthemen, Lehrveranstaltungen, Geräteausleihe, VR-Projekte.
+    \item \textbf{Forschungsinteressierte:} Publikationen, Kooperationen, Team und Methoden.
+    \item \textbf{Externe Besucher:} Orientierung vor einem Lab-Besuch oder einer Anfrage.
 \end{itemize}
 
-Die Nutzungssituation ist typischerweise \textit{goal-oriented}: Der Besucher hat eine konkrete Frage und möchte diese schnell beantwortet haben, ohne die gesamte Seitenstruktur durchsuchen zu müssen.
+\subsection{Kontext der Nutzung}
+
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\toprule
+\textbf{Dimension} & \textbf{Beschreibung} \\
+\midrule
+Wo & Browser am PC/Laptop (Campus, zu Hause), Zielwebsite des IRL \\
+Wann & Vor dem Besuch, bei Seminar- oder Projektrecherche, bei konkreten Fragen \\
+Wie & Asynchron per Textchat, optional Spracheingabe; ohne Installation \\
+Mit wem & Allein; kein gemeinsamer Chat mit Betreuern \\
+\bottomrule
+\end{tabularx}
+
+Die Nutzung ist \textit{goal-oriented}: eine konkrete Frage soll schnell beantwortet werden, ohne die Seitenstruktur zu durchsuchen.
+
+\subsection{User Research}
+
+Im Rahmen von zehn semi-strukturierten Interviews (N=10, Studierende Angewandte Informatik und Soziale Medien) wurden zwei Personas abgeleitet (Anhang~\ref{app:user-research}). Personenbezogene Namen werden nicht verwendet; die Personas werden über Alter, Geschlecht und Nutzerrolle beschrieben:
+
+\begin{itemize}
+    \item \textbf{Studierende (22 Jahre, weiblich):} sucht VR-Projekte, Geräteausleihe und Abschlussarbeitsthemen.
+    \item \textbf{Forschungsinteressierter (35 Jahre, männlich):} sucht Publikationen zu Biosensorik und Kooperationsmöglichkeiten.
+\end{itemize}
+
+Zentrale Erkenntnisse: 80\,\% (8/10) der Befragten würden einem Chatbot eine Frage stellen statt zu navigieren. Hauptfrustration war die unübersichtliche Menüstruktur und Fachbegriffe ohne Erklärung. Die fünf häufigsten Informationsbedürfnisse (Projekte, Geräteausleihe, Publikationen, Team, Abschlussarbeiten) bilden die Kernabdeckung des Chatbots.
+
+\subsection{Stand der Technik}
+
+Vergleichbare Systeme nutzen ähnliche Ansätze, adressieren aber nicht den IRL-Kontext:
+
+\begin{itemize}
+    \item \textbf{Allgemeine KI-Assistenten} (z.\,B. ChatGPT): flexibel, aber ohne verlässliche Verankerung in Lab-Inhalten.
+    \item \textbf{RAG-Chatbots}~\cite{lewis2020rag}: Retrieval plus LLM reduziert Halluzinationen; Basis für Ergonomia.
+    \item \textbf{Hochschul-FAQ-Bots:} feste Antwortbäume, wenig flexibel bei paraphrasierten Fragen.
+\end{itemize}
+
+Ergonomia verbindet RAG mit nutzerzentriertem Gestaltungsprozess und lokaler Verarbeitung.
 
 \subsection{Defizite der aktuellen Website}
+
+Abbildung~\ref{fig:irl-website} zeigt die Startseite von \url{https://immersive-reality-lab.de} mit globaler Navigation (Projects, Publications, Teaching, Methods, Team u.\,a.). Die Inhalte sind über diese Menüstruktur verteilt; eine chatbasierte Alternative soll den Orientierungsaufwand reduzieren.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/irl-website}
+    \caption{Startseite des Immersive Reality Lab (immersive-reality-lab.de).}
+    \label{fig:irl-website}
+\end{figure}
 
 Eine Analyse der bestehenden Website zeigt folgende Problembereiche:
 
 \begin{enumerate}
-    \item \textbf{heterogene Inhaltsstruktur}: Projekte, Publikationen und Lehre sind über verschiedene Unterseiten verteilt, teils mit dynamischen Parametern.
-    \item \textbf{Keine interne Suchfunktion}: Nutzer müssen manuell navigieren oder die Browsersuche (Strg+F) verwenden.
-    \item \textbf{Fachspezifische Terminologie}: Begriffe wie ``INFUSE'', ``XRT-HuFuSa'' oder ``Biosensorik'' setzen Vorwissen voraus.
+    \item \textbf{Heterogene Inhaltsstruktur:} Projekte, Publikationen und Lehre sind über verschiedene Unterseiten verteilt, teils mit dynamischen Parametern.
+    \item \textbf{Keine interne Suchfunktion:} Nutzer müssen manuell navigieren oder die Browsersuche verwenden.
+    \item \textbf{Fachspezifische Terminologie:} Begriffe wie ``INFUSE'' oder ``XRT-HuFuSa'' setzen Vorwissen voraus.
 \end{enumerate}
 
-\subsection{Anforderungen an den Chatbot}
+Die Publikationsseite (Abbildung~\ref{fig:irl-publications}) verdeutlicht das erste Defizit: Inhalte sind über Unterseiten und Filterkategorien (Journal, Conference, Standards u.\,a.) verteilt; eine gezielte Frage nach Publikationen zu einem Thema erfordert mehrere Navigationsschritte.
 
-Aus der Nutzungssituation leiten sich folgende Anforderungen ab:
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/irl-publications}
+    \caption{Publikationsseite des Immersive Reality Lab mit Filterkategorien.}
+    \label{fig:irl-publications}
+\end{figure}
 
-\begin{tabularx}{\textwidth}{lX}
+\subsection{Anforderungen}
+
+Aus Nutzungssituation, User Research und HCD leiten sich folgende Anforderungstypen ab:
+
+\begin{tabularx}{\textwidth}{@{}l X@{}}
 \toprule
-\textbf{Kategorie} & \textbf{Anforderung} \\
+\textbf{Typ} & \textbf{Anforderung} \\
 \midrule
-Funktional & Beantwortung von Fragen zu allen Website-Inhalten \\
-Funktional & Quellenangabe für jede Antwort \\
-Funktional & Gesprächsverlauf über mehrere Anfragen \\
-Usability & Onboarding: Chatbot erklärt eigene Fähigkeiten \\
-Usability & Fehlertoleranz: klare Rückmeldung bei Wissenslücken \\
-Usability & Ladeindikator während der Antwortgenerierung \\
-Technisch & Datenschutz: lokale Verarbeitung (Ollama, ChromaDB) \\
+Funktional & Fragen zu Website-Inhalten beantworten; Quellen je Antwort; Gesprächsverlauf \\
+Nicht-funktional & Akzeptable Antwortzeit (Streaming); Verfügbarkeit ohne Registrierung \\
+Ergonomisch & Aufgabenangemessenheit; Selbstbeschreibung; Fehlertoleranz; Steuerbarkeit \\
+Usability & Onboarding; Vorschlagsfragen; Ladeindikator; klare Wissenslücken-Meldung \\
+Technisch & Lokale Verarbeitung (Ollama, ChromaDB); RAG-Pipeline~\cite{lewis2020rag} \\
+Datenschutz & Keine Cloud-Übertragung personenbezogener Chat-Inhalte \\
+Kontext & Nutzung im Browser, allein, zielorientiert (s.\,o.) \\
 \bottomrule
 \end{tabularx}
+
+\noindent Sessions, Spracheingabe und Theme wurden nach der Nutzerstudie ergänzt (Folgeevaluation geplant).

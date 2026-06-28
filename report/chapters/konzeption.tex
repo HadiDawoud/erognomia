@@ -3,7 +3,7 @@
 
 \subsection{Designprozess}
 
-Die Entwicklung folgte einem iterativen Prozess: User Research $\rightarrow$ Design $\rightarrow$ Prototyping $\rightarrow$ Evaluation. Auf Basis von Nutzerinterviews (siehe Anhang) wurden drei Persona-Typen identifiziert: Studierende, Forschungsinteressierte und Industriepartner. Die häufigsten Informationsbedürfnisse waren Projektinformationen, Publikationen, Lehrangebote und Kontaktdaten.
+Die Entwicklung folgte einem iterativen Prozess nach DIN EN ISO 9241-210~\cite{iso9241-210}: User Research, Design, Prototyping, Evaluation und Iteration. Auf Basis der Interviews (Anhang~\ref{app:user-research}) wurden die Top-5-Informationsbedürfnisse als Kernabdeckung definiert. Für jede Persona wurde ein typischer Gesprächsverlauf skizziert (z.\,B. Studierende fragt nach VR-Projekten, erhält eine Liste mit Nachfrageoption).
 
 \subsection{Architektur}
 
@@ -11,42 +11,70 @@ Ergonomia folgt einer modularen Architektur mit fünf Schichten:
 
 \begin{enumerate}
     \item \textbf{Ingestion:} Ein Web-Crawler scraped die Zielseiten, extrahiert und normalisiert Textinhalte und speichert sie als JSON-Snapshots.
-    \item \textbf{Chunking \& Embedding:} Ein Text-Chunker zerlegt die Rohdaten in überlappende Segmente (1000 Zeichen, 200 Zeichen Overlap). Ein Sentence-Transformer (\texttt{paraphrase-multilingual-mpnet-base-v2}) erzeugt Vektor-Embeddings.
-    \item \textbf{Vektordatenbank:} ChromaDB speichert Embeddings und Metadaten und ermöglicht semantische Ähnlichkeitssuche sowie Keyword-Filter.
+    \item \textbf{Chunking \& Embedding:} Ein Text-Chunker zerlegt die Rohdaten in überlappende Segmente (1000 Zeichen, 200 Zeichen Overlap). Ein Sentence-Transformer erzeugt Vektor-Embeddings.
+    \item \textbf{Vektordatenbank:} ChromaDB speichert Embeddings und Metadaten und ermöglicht semantische Ähnlichkeitssuche.
     \item \textbf{RAG-Pipeline:} Eine Query-Analyse klassifiziert Anfragen (Begrüßung, Capability-Frage, inhaltliche Frage). Bei inhaltlichen Fragen werden relevante Chunks abgerufen und dem LLM als Kontext übergeben.
-    \item \textbf{API \& UI:} Ein FastAPI-Backend stellt REST- und SSE-Endpunkte bereit. Die React/Next.js-Oberfläche rendert Chat-Verlauf und Quellenangaben.
+    \item \textbf{API \& UI:} Ein FastAPI-Backend stellt REST- und SSE-Endpunkte bereit. Die Next.js-Oberfläche rendert Chat-Verlauf, Quellenangaben und Session-Verwaltung.
 \end{enumerate}
+
+Ergänzend persistiert SQLite (\texttt{ChatHistory}) Nachrichten pro Session. Ein Hintergrunddienst erzeugt alle fünf Minuten automatische Session-Titel über das lokale LLM.
 
 \subsection{Designentscheidungen}
 
 \subsubsection{Chunk-Größe und Overlap}
 
-Die Chunk-Größe von 1000 Zeichen mit 200 Zeichen Überlappung wurde gewählt, um ausreichend Kontext für das LLM zu liefern und gleichzeitig die Anzahl der Chunks pro Query begrenzt zu halten. Der Overlap verhindert Informationsverlust an Chunk-Grenzen.
+Die Chunk-Größe von 1000 Zeichen mit 200 Zeichen Überlappung adressiert Aufgabenangemessenheit (ISO 9241-110): ausreichend Kontext für das LLM bei begrenzter Chunk-Anzahl pro Query. Der Overlap verhindert Informationsverlust an Chunk-Grenzen. Eine Satzgrenzen-Erkennung vermeidet abgeschnittene Sätze.
 
-\subsubsection{Embedding-Modell}
+\subsubsection{Prompt-Design}
 
-Die Wahl fiel auf \texttt{paraphrase-multilingual-mpnet-base-v2}, da es mehrsprachige Texte (Deutsch/Englisch) unterstützt und ein gutes Verhältnis von Performance zu Modellgröße bietet.
+Der System-Prompt verlangt Antworten ausschließlich auf Basis des abgerufenen Kontexts, klare Fehlermeldungen bei Wissenslücken und Quellenangaben. Dies adressiert Fehlertoleranz (ISO 9241-110) und Amershi G10/G11.
 
 \subsubsection{Streaming}
 
-Antworten werden per Server-Sent Events (SSE) gestreamt. Dies verbessert die wahrgenommene Geschwindigkeit -- der Nutzer sieht bereits Text, während das LLM noch generiert.
+Antworten werden per Server-Sent Events gestreamt. Dies verbessert die wahrgenommene Geschwindigkeit (Norman: Feedback) und adressiert Amershi G3 (Time services based on context).
 
 \subsubsection{Lokale Verarbeitung}
 
-Sämtliche Komponenten (Embedding, Vektordatenbank, LLM) laufen lokal. Dies adressiert Datenschutzanforderungen und macht das System unabhängig von externen APIs.
+Sämtliche Kernkomponenten laufen lokal. Dies adressiert das Datenschutzbedürfnis aus der User Research (mehrere Befragte äußerten Bedenken gegen Cloud-KI).
+
+\subsubsection{Vorschlagsfragen}
+
+Fünf Chips auf der Startseite zeigen die häufigsten Fragen aus der User Research (Projekte, Ausleihe, Publikationen, Team, Abschlussarbeiten). Sie adressieren Amershi G7 (effiziente Nutzung) und die qualitative Rückmeldung ``Vorschlagsfragen wären gut'' aus der Evaluation. Die Chips wurden nach der Nutzerstudie implementiert.
+
+\subsubsection{Benutzeroberfläche}
+
+Die Oberfläche folgt einem chat-orientierten Layout mit klarer visueller Hierarchie:
+
+\begin{itemize}
+    \item \textbf{Sidebar:} Chat-Historie mit Suche, Neuer-Chat-Aktion und API-Statusanzeige.
+    \item \textbf{Landing State:} Begrüßung mit IRL-Logo, Vorschlagsfragen und Composer.
+    \item \textbf{Composer:} Mehrzeiliges Eingabefeld, Mikrofon für Spracheingabe, Sende-Button mit Ladezustand.
+    \item \textbf{Theme-Umschaltung:} Farbschema (Blau/Orange), persistiert in \texttt{localStorage}.
+\end{itemize}
+
+Abbildung~\ref{fig:ui-landing} zeigt den Landing State im Dark-Theme: links die Session-Sidebar mit API-Status, zentral Begrüßung und Vorschlagsfragen aus der User Research, unten der Composer mit Spracheingabe.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/ui-landing}
+    \caption{Startansicht von Ergonomia mit Sidebar, Vorschlagsfragen und Composer (Dark-Theme).}
+    \label{fig:ui-landing}
+\end{figure}
+
+Session-Verwaltung, Spracheingabe und Theme-Umschaltung wurden nach der Nutzerstudie ergänzt (P2 wünschte Mikrofon, mehrere Probanden nutzten Quellen zum Weiterklicken). Diese Features adressieren Amershi G12 und G8, wurden aber nicht erneut evaluiert.
 
 \subsection{Technische Umsetzung}
 
-\begin{tabularx}{\textwidth}{lX}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
 \toprule
 \textbf{Komponente} & \textbf{Technologie} \\
 \midrule
-Backend & Python, FastAPI, Uvicorn \\
-Frontend & Next.js 15, React 18, TypeScript, Tailwind CSS \\
-Vektordatenbank & ChromaDB (persistent, lokal) \\
-Embedding & sentence-transformers (multilingual-mpnet-base-v2) \\
+Backend & Python, FastAPI \\
+Frontend & Next.js 15, TypeScript, Tailwind \\
+Sessions & SQLite \\
+Vektordatenbank & ChromaDB \\
+Embedding & sentence-transformers (mpnet) \\
 LLM & Ollama + Qwen 2.5 \\
-Scraping & BeautifulSoup, requests, lxml \\
-State Management & React useState, zustand (vorgesehen) \\
+Scraping & BeautifulSoup, requests \\
 \bottomrule
 \end{tabularx}
