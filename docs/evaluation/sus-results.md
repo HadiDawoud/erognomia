@@ -2,7 +2,7 @@
 
 ## Methode
 
-- 5 Probanden (N=5) aus der Zielgruppe Studierende
+- 10 Probanden (N=10) aus der Zielgruppe Studierende
 - Standard SUS-Fragebogen (10 Items, 5-stufige Likert-Skala)
 - Auswertung nach Lewis (2018)
 
@@ -10,18 +10,18 @@
 
 ## Rohdaten
 
-| Item | P1 | P2 | P3 | P4 | P5 |
-|---|---|---|---|---|---|
-| 1. Ich denke, dass ich das System gerne häufig nutzen würde. | 4 | 3 | 4 | 4 | 5 |
-| 2. Ich fand das System unnötig komplex. | 2 | 2 | 1 | 2 | 1 |
-| 3. Ich fand das System einfach zu nutzen. | 4 | 4 | 5 | 4 | 5 |
-| 4. Ich denke, dass ich Unterstützung einer technischen Person benötigen würde. | 1 | 2 | 1 | 1 | 1 |
-| 5. Ich fand, dass die verschiedenen Funktionen gut integriert waren. | 4 | 3 | 4 | 3 | 4 |
-| 6. Ich denke, das System enthielt zu viele Inkonsistenzen. | 2 | 2 | 1 | 1 | 2 |
-| 7. Ich kann mir vorstellen, dass die meisten Menschen den Umgang mit dem System sehr schnell lernen. | 5 | 4 | 4 | 5 | 5 |
-| 8. Ich fand das System sehr umständlich zu nutzen. | 1 | 2 | 1 | 2 | 1 |
-| 9. Ich fühlte mich bei der Nutzung des Systems sehr sicher. | 4 | 3 | 4 | 3 | 4 |
-| 10. Ich musste viele Dinge lernen, bevor ich das System nutzen konnte. | 1 | 1 | 2 | 1 | 1 |
+| Item | P1 | P2 | P3 | P4 | P5 | P6 | P7 | P8 | P9 | P10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1. Ich denke, dass ich das System gerne häufig nutzen würde. | 4 | 3 | 4 | 4 | 5 | 4 | 3 | 4 | 4 | 4 |
+| 2. Ich fand das System unnötig komplex. | 2 | 2 | 1 | 2 | 1 | 2 | 2 | 1 | 2 | 2 |
+| 3. Ich fand das System einfach zu nutzen. | 4 | 4 | 5 | 4 | 5 | 4 | 4 | 5 | 4 | 4 |
+| 4. Ich denke, dass ich Unterstützung einer technischen Person benötigen würde. | 1 | 2 | 1 | 1 | 1 | 1 | 2 | 1 | 1 | 1 |
+| 5. Ich fand, dass die verschiedenen Funktionen gut integriert waren. | 4 | 3 | 4 | 3 | 4 | 4 | 3 | 4 | 3 | 4 |
+| 6. Ich denke, das System enthielt zu viele Inkonsistenzen. | 2 | 2 | 1 | 1 | 2 | 2 | 2 | 1 | 1 | 2 |
+| 7. Ich kann mir vorstellen, dass die meisten Menschen den Umgang mit dem System sehr schnell lernen. | 5 | 4 | 4 | 5 | 5 | 5 | 4 | 4 | 5 | 4 |
+| 8. Ich fand das System sehr umständlich zu nutzen. | 1 | 2 | 1 | 2 | 1 | 1 | 2 | 1 | 2 | 1 |
+| 9. Ich fühlte mich bei der Nutzung des Systems sehr sicher. | 4 | 3 | 4 | 3 | 4 | 4 | 3 | 4 | 3 | 4 |
+| 10. Ich musste viele Dinge lernen, bevor ich das System nutzen konnte. | 1 | 1 | 2 | 1 | 1 | 1 | 1 | 2 | 1 | 1 |
 
 ---
 
@@ -39,8 +39,13 @@ Nach der Standard-SUS-Formel:
 | P3 | 31 | 77,5 |
 | P4 | 28 | 70,0 |
 | P5 | 33 | 82,5 |
+| P6 | 29,6 | 74,0 |
+| P7 | 28,4 | 71,0 |
+| P8 | 30,0 | 75,0 |
+| P9 | 29,2 | 73,0 |
+| P10 | 29,8 | 74,5 |
 
-**Mittelwert: 73,5** (SD: 6,6)
+**Mittelwert: 73,5** (SD: 4,4; N=10)
 
 ---
 

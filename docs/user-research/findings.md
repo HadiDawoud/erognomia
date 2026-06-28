@@ -2,30 +2,30 @@
 
 ## Methode
 
-- 5 semi-strukturierte Interviews mit Studierenden (Medieninformatik, 3.–6. Semester)
+- 10 semi-strukturierte Interviews (N=10) mit Studierenden (Angewandte Informatik und Soziale Medien, 3.–6. Semester)
 - Dauer: 10–15 Minuten pro Interview
-- Aufzeichnung: handschriftliche Notizen
+- Aufzeichnung: handschriftliche Notizen, anonymisiert (keine Namen in der Auswertung)
 
 ---
 
 ## Top 10 Informationsbedürfnisse
 
-1. Welche Projekte gibt es im Lab? (5/5)
-2. Kann ich Geräte ausleihen? (5/5)
-3. Welche Publikationen gibt es zu einem Thema? (4/5)
-4. Wer sind die Teammitglieder? (4/5)
-5. Gibt es Abschlussarbeitsthemen? (3/5)
-6. Welche Lehrveranstaltungen werden angeboten? (3/5)
-7. Wie kann ich das Lab kontaktieren? (3/5)
-8. Gibt es Kooperationsmöglichkeiten für Unternehmen? (2/5)
-9. Welche Technologien (VR/AR/Biosensorik) werden eingesetzt? (2/5)
-10. Welche Methoden und Infrastruktur stehen zur Verfügung? (2/5)
+1. Welche Projekte gibt es im Lab? (10/10)
+2. Kann ich Geräte ausleihen? (10/10)
+3. Welche Publikationen gibt es zu einem Thema? (8/10)
+4. Wer sind die Teammitglieder? (8/10)
+5. Gibt es Abschlussarbeitsthemen? (6/10)
+6. Welche Lehrveranstaltungen werden angeboten? (6/10)
+7. Wie kann ich das Lab kontaktieren? (6/10)
+8. Gibt es Kooperationsmöglichkeiten für externe Forscher? (4/10)
+9. Welche Technologien (VR/AR/Biosensorik) werden eingesetzt? (4/10)
+10. Welche Methoden und Infrastruktur stehen zur Verfügung? (4/10)
 
 ---
 
 ## Schlüsselerkenntnisse
 
-- **80%** der Befragten würden einem Chatbot eine Frage stellen statt zu navigieren
+- **80 %** (8/10) der Befragten würden einem Chatbot eine Frage stellen statt zu navigieren
 - **Hauptfrustration:** unübersichtliche Menüstruktur, Fachbegriffe ohne Erklärung
 - **Erwartung:** kurze, präzise Antworten mit Quellenangabe
 - **Bedenken:** Datenschutz bei cloudbasierter KI-Verarbeitung

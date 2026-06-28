@@ -19,15 +19,15 @@
 
 **Aufgabe 1:** "Finde heraus, welche VR-Projekte das Lab gerade betreibt."
 - Erfolgskriterium: Mindestens 2 Projekte werden korrekt genannt
-- Erfolgsrate: 5/5
+- Erfolgsrate: 10/10
 
 **Aufgabe 2:** "Kannst du herausfinden, ob du als Student Geräte ausleihen kannst?"
 - Erfolgskriterium: Antwort zu Ausleihbedingungen
-- Erfolgsrate: 4/5 (1 Proband bekam unvollständige Antwort)
+- Erfolgsrate: 8/10 (2 Probanden bekamen unvollständige Antworten)
 
 **Aufgabe 3:** "Finde eine Publikation zum Thema EEG oder Biosensoren."
 - Erfolgskriterium: Mindestens 1 Publikation wird genannt
-- Erfolgsrate: 5/5
+- Erfolgsrate: 10/10
 
 ### 3. SUS-Fragebogen (3 Min)
 - Papierfragebogen mit 10 Items
@@ -45,3 +45,8 @@
 | P3 | Versuchte Fachbegriffe, die nicht erkannt wurden |
 | P4 | Nutzte die Quellenangaben aktiv zum Weiterklicken |
 | P5 | Sehr schnell, stellte mehrere Folgefragen |
+| P6 | Nutzte Vorschlagsfragen nach kurzer Orientierung |
+| P7 | Wünschte klarere Fehlermeldungen bei unbekannten Begriffen |
+| P8 | Positiv überrascht von Quellenangaben |
+| P9 | Testete mehrere Folgefragen im selben Chat |
+| P10 | Verglich Antworten mit Website-Inhalten |

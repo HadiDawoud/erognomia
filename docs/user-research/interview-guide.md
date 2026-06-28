@@ -2,7 +2,7 @@
 
 **Modul:** Software-Ergonomie (AIS-B-2-6.10)  
 **Datum:** KW 18–19 (April/Mai 2026)  
-**Zielgruppe:** Studierende, Kommilitonen, potenzielle Nutzer
+**Zielgruppe:** Studierende, Kommilitonen, potenzielle Nutzer (N=10, anonymisiert)
 
 ---
 
