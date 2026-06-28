@@ -1,4 +1,4 @@
-.PHONY: setup ingest api frontend test lint report slides
+.PHONY: setup ingest ingest-js api frontend test lint report slides
 
 setup:
 	pip install -r requirements.txt
@@ -6,6 +6,9 @@ setup:
 
 ingest:
 	python scripts/crawl_and_ingest.py
+
+ingest-js:
+	python scripts/ingest_js_data.py
 
 api:
 	uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8001
