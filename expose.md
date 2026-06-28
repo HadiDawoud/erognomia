@@ -10,7 +10,7 @@
  
 ## 1. Problemstellung
  
-Das Immersive Reality Lab (immersive-reality-lab.de) betreibt Forschung in den Bereichen Extended Reality (XR), Digital Health und psychophysiologische Qualitätsmessung. Die Website richtet sich an ein heterogenes Publikum: Studierende, Forschende, Industriepartner und Interessierte. Die aktuelle Informationsarchitektur erfordert es, dass Nutzer aktiv durch mehrere Unterseiten navigieren, um relevante Informationen zu Projekten, Publikationen, Lehrangeboten und Geräteausleihe zu finden.
+Das Immersive Reality Lab (immersive-reality-lab.de) betreibt Forschung in den Bereichen Extended Reality (XR), Digital Health und psychophysiologische Qualitätsmessung. Die Website richtet sich an ein heterogenes Publikum: Studierende, Forschende und Interessierte. Die aktuelle Informationsarchitektur erfordert es, dass Nutzer aktiv durch mehrere Unterseiten navigieren, um relevante Informationen zu Projekten, Publikationen, Lehrangeboten und Geräteausleihe zu finden.
  
 Aus Sicht der Software-Ergonomie entstehen dabei mehrere Probleme:
  

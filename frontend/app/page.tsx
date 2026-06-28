@@ -4,10 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   ArrowUp,
   Check,
-  Compass,
   ExternalLink,
-  Image as ImageIcon,
-  LayoutGrid,
   Loader2,
   Mic,
   Palette,
@@ -40,8 +37,19 @@ interface Session {
 const GREETING: Message = {
   role: "assistant",
   content:
-    "Hallo! Ich bin Ergonomia, dein KI-Assistent für das Immersive Reality Lab. Wie kann ich dir heute helfen?",
+    "Hallo! Ich bin Ergonomia, der Chatbot des Immersive Reality Lab an der HSHL. " +
+    "Ich beantworte Fragen zu Projekten, Publikationen, Lehre, Ausstattung und Team – " +
+    "ausschließlich auf Basis der Lab-Website. Wenn ich nichts Passendes finde, sage ich das ehrlich.",
 };
+
+/** Top-Fragen aus der User Research (docs/user-research/findings.md) */
+const SUGGESTED_QUESTIONS = [
+  "Welche VR-Projekte gibt es im Lab?",
+  "Kann ich als Student Geräte ausleihen?",
+  "Welche Publikationen gibt es zu Biosensoren?",
+  "Wer sind die Teammitglieder?",
+  "Gibt es Abschlussarbeitsthemen?",
+] as const;
 
 function getApiBase(): string {
   if (typeof process.env.NEXT_PUBLIC_API_BASE === "string" && process.env.NEXT_PUBLIC_API_BASE) {
@@ -283,11 +291,11 @@ export default function ChatPage() {
     }
   };
 
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
+  const sendMessage = async (text?: string) => {
+    const userMessage = (text ?? input).trim();
+    if (!userMessage || isLoading) return;
 
     if (isListening) stopListening();
-    const userMessage = input.trim();
     setInput("");
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setIsLoading(true);
@@ -385,12 +393,21 @@ export default function ChatPage() {
     (s.title || "New Chat").toLowerCase().includes(search.toLowerCase()),
   );
 
-  const featurePills = [
-    { icon: Search, label: "Search Online" },
-    { icon: ImageIcon, label: "Create Image" },
-    { icon: Compass, label: "Deep Research" },
-    { icon: LayoutGrid, label: "Chat Presets" },
-  ];
+  const suggestionChips =
+    !hasConversation && !isLoading ? (
+      <div className="mt-4 flex flex-wrap justify-center gap-2">
+        {SUGGESTED_QUESTIONS.map((question) => (
+          <button
+            key={question}
+            type="button"
+            onClick={() => sendMessage(question)}
+            className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-300 transition hover:border-[var(--accent)] hover:bg-white/10 hover:text-white"
+          >
+            {question}
+          </button>
+        ))}
+      </div>
+    ) : null;
 
   const composer = (
     <form onSubmit={handleSubmit} className="w-full">
@@ -445,18 +462,6 @@ export default function ChatPage() {
             {isLoading ? <Loader2 size={18} className="animate-spin" /> : <ArrowUp size={18} />}
           </button>
         </div>
-      </div>
-      <div className="mt-3 flex flex-wrap justify-center gap-2">
-        {featurePills.map(({ icon: Icon, label }) => (
-          <button
-            key={label}
-            type="button"
-            title="Bald verfügbar"
-            className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-300 transition hover:bg-white/10"
-          >
-            <Icon size={13} /> {label}
-          </button>
-        ))}
       </div>
     </form>
   );
@@ -736,7 +741,10 @@ export default function ChatPage() {
                     "radial-gradient(ellipse at center, var(--glow-start) 0%, var(--glow-mid) 40%, var(--glow-end) 70%)",
                 }}
               />
-              <div className="relative">{composer}</div>
+              <div className="relative">
+                {composer}
+                {suggestionChips}
+              </div>
             </div>
             <p className="mt-4 text-center text-[11px] text-gray-500">
               Ergonomia kann Fehler machen. Überprüfe wichtige Informationen auf der Website.

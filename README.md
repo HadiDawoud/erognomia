@@ -126,7 +126,7 @@ make slides    # Presentation slides (PDF)
 The chatbot is evaluated against:
 - **Amershi et al. (2019)** — 18 Guidelines for Human-AI Interaction
 - **Nielsen's 10 Usability Heuristics** — adapted for conversational UI
-- **SUS (System Usability Scale)** — 5 real user tests (Score: 73.5)
+- **SUS (System Usability Scale)** — 10 Nutzertests (Score: 73.5)
 - **DIN EN ISO 9241-110** — Interaction Principles
 
 ---

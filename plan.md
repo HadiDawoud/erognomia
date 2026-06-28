@@ -96,13 +96,12 @@ Ergonomia/
 ### Aufgaben
  
 #### Nutzergruppen identifizieren
-Mindestens 3 Personas definieren:
- 
+Mindestens 2 Personas definieren:
+
 | Persona | Beschreibung |
 |---|---|
 | **Studierende/r** | Sucht nach Themen für Bachelorarbeit, Geräteausleihe, Lehrveranstaltungen |
 | **Forschungsinteressierte/r** | Will Publikationen finden, Kooperationsmöglichkeiten erkunden |
-| **Industriepartner** | Fragt nach konkreten Projekten, Transfer, Kontaktpersonen |
  
 #### Mini-Interview durchführen
 - 5–8 Personen befragen (Kommilitonen reichen!)
