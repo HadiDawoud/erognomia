@@ -28,16 +28,29 @@ class RAGPipeline:
             context_parts.append(f"Source [{i+1}]: {title} ({source})\nContent: {text}")
         return "\n\n---\n\n".join(context_parts)
 
+    def _metadata_filter(self, classification: Dict[str, Any], query: str) -> Optional[Dict[str, str]]:
+        category = classification.get("category")
+        if category == "publication":
+            return {"doc_type": "publication"}
+        if category == "project":
+            return {"doc_type": "project"}
+        q = query.lower()
+        if any(w in q for w in ("publikation", "publication", "paper", "journal")):
+            return {"doc_type": "publication"}
+        if any(w in q for w in ("projekt", "project", "forschung")):
+            return {"doc_type": "project"}
+        return None
+
     def retrieve_context(self, query: str, classification: Dict[str, Any]) -> List[Dict[str, Any]]:
         results = []
-        pub_filter = {"doc_type": "publication"} if classification.get("category") == "publication" else None
+        type_filter = self._metadata_filter(classification, query)
         
         # 1. Semantic search
         semantic_results = self.vector_store.similarity_search(
-            query, k=settings.retrieval_k, filter_metadata=pub_filter
+            query, k=settings.retrieval_k, filter_metadata=type_filter
         )
         results.extend(semantic_results)
-        if pub_filter and len(semantic_results) < settings.retrieval_k:
+        if type_filter and len(semantic_results) < settings.retrieval_k:
             results.extend(
                 self.vector_store.similarity_search(query, k=settings.retrieval_k)
             )
@@ -51,9 +64,9 @@ class RAGPipeline:
         # 2. Keyword search if needed
         if classification.get("needs_keyword_search") and classification.get("search_keywords"):
             for kw in classification["search_keywords"]:
-                kw_results = self.vector_store.keyword_search(kw, k=2, filter_metadata=pub_filter)
+                kw_results = self.vector_store.keyword_search(kw, k=2, filter_metadata=type_filter)
                 results.extend(kw_results)
-                if pub_filter:
+                if type_filter:
                     results.extend(self.vector_store.keyword_search(kw, k=2))
 
         # Person queries: boost lexical hits on full name and name parts (helps once profile pages exist in store).

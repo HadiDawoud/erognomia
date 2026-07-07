@@ -60,6 +60,21 @@ cleanup() {
 
 trap cleanup EXIT INT TERM
 
+free_port() {
+  local port="$1"
+  local pids
+  pids="$(lsof -ti :"${port}" 2>/dev/null || true)"
+  if [[ -n "$pids" ]]; then
+    echo "freeing port ${port} (pids: ${pids//$'\n'/ })"
+    kill -9 $pids 2>/dev/null || true
+    sleep 0.5
+  fi
+}
+
+free_port "$API_PORT"
+free_port 3000
+free_port 3001
+
 echo "API: http://${API_HOST}:${API_PORT}/  docs: http://${API_HOST}:${API_PORT}/docs"
 "${UVICORN[@]}" src.api.main:app --reload --host "$API_HOST" --port "$API_PORT" &
 PIDS+=( "$!" )

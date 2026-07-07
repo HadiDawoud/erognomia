@@ -36,7 +36,10 @@ class Settings(BaseSettings):
     ingest_js_data: bool = True
 
     # CORS Configuration
-    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+    cors_origins: str = (
+        "http://localhost:3000,http://127.0.0.1:3000,"
+        "http://localhost:3001,http://127.0.0.1:3001"
+    )
 
     # Chat History Configuration
     chat_history_retention_days: int = 90

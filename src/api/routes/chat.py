@@ -50,6 +50,12 @@ async def chat_stream(message: str, session_id: str = None, pipeline=Depends(get
     history_store.create_session(sid)
     history_store.add_message(sid, "user", message)
 
+    def _next_item(gen):
+        try:
+            return next(gen)
+        except StopIteration:
+            return None
+
     async def event_generator():
         gen = pipeline.stream_query(message)
         answer_parts: list[str] = []
@@ -59,8 +65,12 @@ async def chat_stream(message: str, session_id: str = None, pipeline=Depends(get
 
         while True:
             try:
-                item = await asyncio.to_thread(next, gen)
+                item = await asyncio.to_thread(_next_item, gen)
+                if item is None:
+                    break
                 t = item.get("type")
+                if t == "done":
+                    break
                 if t == "answer" and item.get("content") is not None:
                     payload = item["content"]
                     answer_parts.append(payload)
@@ -70,8 +80,6 @@ async def chat_stream(message: str, session_id: str = None, pipeline=Depends(get
                 else:
                     continue
                 yield f"event: {t}\ndata: {json.dumps(payload)}\n\n"
-            except StopIteration:
-                break
             except Exception as e:
                 yield f"event: error\ndata: {json.dumps({'error': str(e)})}\n\n"
                 break
