@@ -3,12 +3,16 @@
 
 \subsection{Human-Centred Design (ISO 9241-210)}
 
-DIN EN ISO 9241-210~\cite{iso9241-210} definiert den nutzerzentrierten Gestaltungsprozess: Nutzer verstehen, Anforderungen festlegen, Lösungskonzepte entwickeln, Prototyp evaluieren, iterieren. Ergonomia folgt diesem Zyklus (Interviews $\rightarrow$ Personas $\rightarrow$ Prototyp $\rightarrow$ SUS/Think-Aloud $\rightarrow$ UI-Erweiterungen).
+DIN EN ISO 9241-210~\cite{iso9241-210} beschreibt den nutzerzentrierten Gestaltungsprozess: verstehen, entwerfen, evaluieren, iterieren. Genau in dieser Reihenfolge sind wir vorgegangen -- von zehn Interviews über Personas und einen ersten Prototyp bis zu SUS-Tests und anschließenden UI-Anpassungen.
 
 \subsection{Interaktionsprinzipien (ISO 9241-110)}
 
-Alle sieben Prinzipien nach DIN EN ISO 9241-110~\cite{iso9241} wurden bei der Gestaltung berücksichtigt:
+Die sieben Prinzipien nach DIN EN ISO 9241-110~\cite{iso9241} haben die Gestaltung geleitet, ohne dass für jede Kleinigkeit ein separates Kriterium gesucht wurde. Tabelle~\ref{tab:iso110} fasst die wichtigsten Bezüge zusammen; im weiteren Bericht werden einzelne Entscheidungen nur dort vertieft, wo sie für das Verständnis relevant sind.
 
+\begin{table}[htbp]
+\centering
+\caption{Bezüge zu Interaktionsprinzipien nach ISO 9241-110}
+\label{tab:iso110}
 \begin{tabularx}{\textwidth}{@{}l X@{}}
 \toprule
 \textbf{Prinzip} & \textbf{Umsetzung in Ergonomia} \\
@@ -18,19 +22,12 @@ Selbstbeschreibungsfähigkeit & Begrüßung, Capability-Antwort, Vorschlagsfrage
 Erwartungskonformität & Chat-Layout, bekannte UI-Muster (Composer, Sidebar) \\
 Lernförderlichkeit & Vorschlagsfragen; Quellen zum Vertiefen \\
 Steuerbarkeit & Neuer Chat; freier Themenwechsel \\
-Individualisierbarkeit & Theme-Umschaltung; Session-Verwaltung \\
-Fehlertoleranz & Fallback bei Wissenslücken; Disclaimer \\
+Individualisierbarkeit & Theme-Umschaltung (Blau/Orange); Session-Verwaltung \\
+Fehlertoleranz & Fallback bei Wissenslücken; Disclaimer; Quellen zur Überprüfung \\
 \bottomrule
 \end{tabularx}
+\end{table}
 
 \subsection{Weitere Rahmenwerke}
 
-\textbf{Norman}~\cite{norman2013}: Affordanzen (Eingabefeld, Chips), Signifier (Ladeindikator, Quellen) und Feedback (Streaming).
-
-\textbf{Nielsen}~\cite{nielsen1994}: Systemstatus (Ladeindikator, API-Anzeige), Fehlervermeidung (RAG nur aus Kontext), Hilfe bei Fehlern (Fallback).
-
-\textbf{Amershi et al.}~\cite{amershi2019}: 18 Guidelines für Mensch-KI-Interaktion; Evaluation in Kapitel~\ref{sec:evaluation}.
-
-\textbf{SUS}~\cite{lewis2018}: Standardisierter Fragebogen (0--100); Benchmark 68; Rohdaten im Anhang~\ref{app:sus}.
-
-\textbf{RAG}~\cite{lewis2020rag}: Retrieval liefert Website-Chunks als LLM-Kontext; reduziert Halluzinationen gegenüber reinem Prompting.
+Neben ISO nutzten wir mehrere etablierte Bezugsrahmen, je nachdem ob es um allgemeine Usability oder speziell um KI-Interaktion ging. Norman~\cite{norman2013} half vor allem bei Feedback und erkennbaren Bedienelementen -- etwa beim Streaming und den Quellenlinks. Nielsens Heuristiken~\cite{nielsen1994} waren praktisch beim Ladezustand und bei Fehlermeldungen. Für Chatbots mit LLM-Hintergrund griffen wir auf Amershi et al.~\cite{amershi2019} zurück; die Auswertung steht in Kapitel~\ref{sec:evaluation}. Der SUS~\cite{lewis2018} lieferte einen vergleichbaren Usability-Wert (Benchmark 68; Rohdaten im Anhang~\ref{app:sus}). Technisch basiert Ergonomia auf Retrieval-Augmented Generation~\cite{lewis2020rag}: Website-Inhalte werden abgerufen und dem Sprachmodell als Kontext mitgegeben, statt alles frei erfinden zu lassen.

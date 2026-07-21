@@ -1,0 +1,42 @@
+% Architekturdiagramm für Ergonomia (via \input in konzeption.tex)
+\begin{tikzpicture}[
+  font=\small\sffamily,
+  box/.style={draw, rounded corners=3pt, fill=#1, minimum height=1.05cm, align=center, inner sep=5pt},
+  arrow/.style={-{Stealth[length=2mm]}, line width=0.5pt, draw=gray!65},
+  section/.style={draw=gray!45, dashed, rounded corners=6pt, inner sep=14pt},
+  tag/.style={font=\footnotesize\sffamily\bfseries, text=gray!55}
+]
+
+% ── Offline ───────────────────────────────────────────────────────────
+\node[tag, anchor=west] at (0, 4.1) {Wissensaufbau (offline)};
+\node[box, fill=gray!10, minimum width=2.4cm] (web) at (1.4, 3.1) {IRL-\\Website};
+\node[box, fill=orange!14, minimum width=3.6cm] (ingest) at (5.8, 3.1) {Crawler, Chunking\\ \& Embedding};
+\node[box, fill=orange!22, minimum width=2.5cm] (chroma) at (10.2, 3.1) {ChromaDB};
+
+\draw[arrow] (web) -- (ingest);
+\draw[arrow] (ingest) -- (chroma);
+
+\begin{scope}[on background layer]
+  \node[section, fit=(web)(ingest)(chroma), label={[tag]above:}] {};
+\end{scope}
+
+% ── Online ────────────────────────────────────────────────────────────
+\node[tag, anchor=west] at (0, 1.55) {Chat (online)};
+\node[box, fill=gray!10, minimum width=2.1cm] (user) at (1.1, 0.55) {Nutzer};
+\node[box, fill=blue!11, minimum width=2.3cm] (ui) at (3.8, 0.55) {Next.js\\UI};
+\node[box, fill=blue!11, minimum width=2.5cm] (api) at (6.8, 0.55) {FastAPI};
+\node[box, fill=orange!14, minimum width=3.2cm] (rag) at (10.5, 0.55) {RAG-Pipeline\\ \& Ollama};
+
+\draw[arrow] (user) -- (ui);
+\draw[arrow] (ui) -- (api);
+\draw[arrow] (api) -- (rag);
+\draw[arrow] (chroma.south) -- ++(0,-0.55) -| (rag.north);
+
+\node[box, fill=gray!8, minimum width=2.5cm] (sqlite) at (6.8, -1.15) {SQLite\\Sessions};
+\draw[arrow] (api) -- (sqlite);
+
+\begin{scope}[on background layer]
+  \node[section, fit=(user)(ui)(api)(rag)(sqlite), label={[tag]above:}] {};
+\end{scope}
+
+\end{tikzpicture}

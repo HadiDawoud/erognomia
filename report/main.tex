@@ -19,6 +19,8 @@
 \usepackage{etoolbox}
 \usepackage{amssymb}
 \usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, backgrounds, fit}
 
 % Kompakte Tabellen (kleinere Schrift, weniger Zellenabstand)
 \captionsetup{font=small, skip=4pt}
@@ -69,7 +71,7 @@
         \textbf{Name:} & Osamah Hatem \\
         \textbf{Matrikelnummer:} & 1231431 \\
         & \\
-        \textbf{Name:} & Mohammed Albarkawi \\
+        \textbf{Name:} & Mohammad Albarkawi \\
         \textbf{Matrikelnummer:} & 1231320 \\
     \end{tabular}
     \vspace{1.5cm}\par
@@ -78,6 +80,10 @@
     \vspace{1cm}
     {\large Abgabedatum: \today\par}
 \end{titlepage}
+
+%% ── Zusammenfassung ────────────────────────────────────────────────────
+\input{chapters/zusammenfassung}
+\newpage
 
 %% ── Inhaltsverzeichnis ─────────────────────────────────────────────────
 \tableofcontents

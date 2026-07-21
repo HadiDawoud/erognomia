@@ -3,27 +3,40 @@
 
 \subsection{Herausforderungen}
 
-Die größte Herausforderung lag in der heterogenen Struktur der Zielwebsite. Dynamisch geladene Inhalte und unterschiedliche Seitenformate erschwerten das konsistente Extrahieren von Textinhalten. Der Web-Crawler musste mehrfach angepasst werden.
+Am meisten Zeit fraß die Website selbst. Seiten laden Inhalte unterschiedlich, manche Texte stecken in Modulen, die der Crawler erst nach mehreren Anläufen zuverlässig erwischte. Mehrfach mussten wir den Import anpassen, bevor Antworten stabil genug für Tests waren.
 
-Eine weitere Herausforderung war die Chunk-Strategie: Die initiale rein zeichenbasierte Aufteilung führte zu Chunks, die mitten im Satz endeten. Durch Satzgrenzen-Erkennung konnte die Qualität verbessert werden.
+Auch hinter den Kulissen war nicht alles glatt: Die erste Chunk-Aufteilung schnitt mitten in Sätzen ab, was in Antworten merkbar war. Erst mit Überlappung und Satzgrenzen wurde es besser -- aber perfekt ist es nicht.
 
-In der UI-Phase mussten ergonomische Anforderungen mit visueller Klarheit abgewogen werden. Die Session-Verwaltung durfte nicht zu leeren Chats führen (lazy creation), und die Spracheingabe musste ohne zusätzliche Server-Infrastruktur nutzbar bleiben.
+In der UI merkten wir schnell, dass kleine Details großen Unterschied machen. Sessions sollten nicht zu leeren Chats führen (lazy creation), die Spracheingabe musste ohne extra Server laufen, und trotzdem durfte die Oberfläche nicht überladen wirken. Hier haben wir mehrfach umgebaut.
 
 \subsection{Limitationen}
 
+Die folgenden Einschränkungen betreffen vor allem Nutzung, Bewertung und ergonomische Abdeckung -- nicht die technische Architektur im Detail.
+
 \begin{itemize}
-    \item \textbf{Stichprobengröße:} N=10 ist für formative Tests ausreichend, erlaubt aber nur begrenzte Generalisierbarkeit.
-    \item \textbf{Zeitliche Diskrepanz:} Vorschlagsfragen, Sessions, Spracheingabe und Theme wurden nach der Evaluation ergänzt und sind nicht durch SUS/Amershi abgesichert.
-    \item \textbf{Lokales LLM:} Ollama mit Qwen 2.5 liefert gute Ergebnisse, ist aber langsamer als Cloud-Modelle und qualitativ weniger stabil bei komplexen Anfragen.
-    \item \textbf{Einfaches Chunking:} Die zeichenbasierte Aufteilung ist nicht tokenbewusst.
-    \item \textbf{Keine automatische Nachlern-Funktion:} Neue Informationen erfordern einen vollständigen Re-Import.
-    \item \textbf{Browserabhängige Spracheingabe:} Die Web Speech API ist nicht in allen Browsern gleich verfügbar.
+    \item \textbf{Stichprobengröße:} N=10 reicht für formative Tests, erlaubt aber keine breiten Aussagen über alle Nutzergruppen am IRL.
+    \item \textbf{Zeitliche Diskrepanz:} Prototyp~2 (Vorschlagsfragen, Sessions, Spracheingabe, Theme) kam nach der SUS-Studie zu Prototyp~1 dazu (s.\,Abschnitt~\ref{sec:versionen}). Ob die Erweiterungen den Einstieg und die Steuerbarkeit verbessern, ist offen.
+    \item \textbf{Vertrauen und Fehlertoleranz:} Ergonomia kann falsche Antworten liefern. Disclaimer und Quellenlinks mildern das, ersetzen aber keine klare Kennzeichnung unsicherer Antworten.
+    \item \textbf{Fachbegriffe:} In Think-Aloud-Protokollen wünschten Probanden bessere Unterstützung bei Synonymen und Lab-Vokabular -- ein wiederkehrendes Usability-Problem, das im Prototyp noch nicht gelöst ist.
+    \item \textbf{Barrierefreiheit:} Kontrast, Tastaturbedienung und Screenreader-Kompatibilität wurden nicht systematisch geprüft. Die Spracheingabe ist nur in manchen Browsern verfügbar und kein vollwertiger Ersatz für barrierefreie Texteingabe.
+    \item \textbf{Nutzungskontext:} Die Oberfläche ist auf Desktop am Laptop/PC ausgelegt; mobile Nutzung auf dem Campus wurde nicht evaluiert.
+    \item \textbf{Fehlendes Nutzer-Feedback:} Es gibt keinen Mechanismus, mit dem Nutzer Antworten bewerten oder Probleme melden können -- damit fehlt eine direkte Grundlage für weitere UX-Iterationen.
 \end{itemize}
+
+\noindent Technische Grenzen (z.\,B. lokales LLM, Chunking, manueller Re-Import) beeinflussen indirekt die Nutzung, standen in diesem Bericht aber nicht im Mittelpunkt der ergonomischen Betrachtung.
 
 \subsection{Verbesserungsvorschläge}
 
-Folgeevaluation der erweiterten UI; Synonym-Erkennung für Fachbegriffe; tokenbasiertes Chunking; WCAG-Prüfung.
+Nicht alles aus der Evaluation ließ sich vor der Abgabe noch umsetzen -- und manches haben wir danach ergänzt, ohne es erneut zu testen. Deshalb würden wir als Erstes dort weitermachen, wo die größte Unsicherheit bleibt:
+
+\textbf{1. Folgeevaluation der erweiterten UI.} Vorschlagsfragen, Sessions, Spracheingabe und Theme kamen nach den SUS-Tests dazu. Ohne zweite Runde mit Think-Aloud wissen wir nicht, ob der Einstieg wirklich leichter geworden ist. Das hat für uns Priorität.
+
+\textbf{2. Besser mit Fachbegriffen umgehen.} In der Studie tauchte das am häufigsten auf: Formulierungen wie ``VR-Brille'' oder ``Head-Mounted Display'' führen zu unterschiedlichen Treffern. Nachfragen, Synonym-Hinweise oder ein kurzes Glossar würden hier mehr bringen als feinere Chunk-Größen.
+
+\textbf{3. Vertrauen sichtbarer machen.} Der Disclaimer und die Quellenlinks sind ein Anfang. Sinnvoll wäre zusätzlich, unsichere Antworten optisch zu markieren und ein einfaches ``War das hilfreich?'' einzubauen -- damit Nutzerfeedback künftige Iterationen steuert.
+
+\textbf{Später, aber relevant:} WCAG-Prüfung (Kontrast, Tastatur, Screenreader), mobile Nutzung auf dem Campus und etwas klareres Onboarding, was Ergonomia nicht leisten kann. Technische Optimierungen wie tokenbasiertes Chunking würden wir angehen, sobald die offenen UX-Fragen geklärt sind.
 
 \subsection{Fazit}
 
-Ergonomia zeigt, dass ein RAG-Chatbot mit lokalen Komponenten nutzerzentrierte Antworten auf Basis einer Website liefern kann (SUS 73,5). Human-Centred Design nach ISO 9241-210~\cite{iso9241-210} prägte den gesamten Prozess von Interviews über Architekturentscheidungen bis zur Evaluation. Ergonomia ist ein UX-Projekt, das einen Chatbot als Interaktionsmedium nutzt.
+Mit SUS 73,5 liegt Ergonomia über dem üblichen Benchmark und hat in den Aufgaben meist funktioniert. Zur Leitfrage lässt sich festhalten: Ein dialogbasierter Zugang kann Informationsrecherche am IRL spürbar erleichtern, wenn Transparenz und Verifizierbarkeit mitgedacht werden, Menüs und Fachbegriffe ersetzt er nicht vollständig. Entscheidender für uns war aber der Prozess: erst verstehen, was Studierende am IRL wirklich suchen, dann bauen, testen, nachbessern. Der Chatbot ist dabei das Medium -- im Mittelpunkt steht, ob sich die Nutzung fair und nachvollziehbar anfühlt. Dass wichtige Infos an der Quelle geprüft werden sollten, kommunizieren wir offen; perfekt wird ein solches System ohnehin nicht.

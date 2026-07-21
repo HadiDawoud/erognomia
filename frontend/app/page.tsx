@@ -342,9 +342,20 @@ export default function ChatPage() {
           }
           if (!eventType) continue;
 
-          if (eventType === "session" && typeof dataPayload === "string") {
+            if (eventType === "session" && typeof dataPayload === "string") {
             setCurrentSessionId(dataPayload);
             continue;
+          }
+
+          if (eventType === "error") {
+            const errMsg =
+              typeof dataPayload === "object" &&
+              dataPayload !== null &&
+              "error" in dataPayload &&
+              typeof (dataPayload as { error: unknown }).error === "string"
+                ? (dataPayload as { error: string }).error
+                : "Unbekannter Serverfehler";
+            throw new Error(errMsg);
           }
 
           setMessages((prev) => {

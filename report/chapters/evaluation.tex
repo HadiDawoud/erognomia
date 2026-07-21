@@ -14,7 +14,7 @@ Die Evaluation erfolgte durch Nutzertests mit zehn Probanden (N=10) aus der Ziel
 
 Nach den Aufgaben füllten die Probanden den SUS-Fragebogen aus. Zusätzlich wurde der Chatbot gegen die 18 Amershi-Guidelines bewertet.
 
-\textbf{Zeitlicher Stand:} Die Tests bezogen sich auf den funktionalen Kern (RAG-Antworten, Quellen, Streaming, Onboarding, Ladeindikator). Erweiterungen wie Vorschlagsfragen, Session-Verwaltung, Theme-Umschaltung und Spracheingabe wurden danach implementiert. Eine Folgeevaluation dieser Features ist vorgesehen.
+\textbf{Zeitlicher Stand:} Alle Ergebnisse in diesem Kapitel stammen aus \textbf{Prototyp~1} (s.\,Abschnitt~\ref{sec:versionen}): RAG-Antworten, Quellen, Streaming, Onboarding, Ladeindikator, Sidebar und Disclaimer. Vorschlagsfragen, Session-Verwaltung, Theme und Spracheingabe gehören zu \textbf{Prototyp~2} und wurden danach implementiert; dafür ist eine Folgeevaluation vorgesehen.
 
 \subsection{SUS-Ergebnisse}
 
@@ -28,18 +28,18 @@ P2 & 65,0 \\
 P3 & 77,5 \\
 P4 & 70,0 \\
 P5 & 82,5 \\
-P6 & 74,0 \\
-P7 & 71,0 \\
+P6 & 75,0 \\
+P7 & 70,0 \\
 P8 & 75,0 \\
-P9 & 73,0 \\
-P10 & 74,5 \\
+P9 & 72,5 \\
+P10 & 75,0 \\
 \midrule
 \textbf{Ø} & \textbf{73,5} \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Mit einem Mittelwert von 73,5 liegt Ergonomia über dem Benchmark von 68~\cite{lewis2018} und damit im Bereich ``gut'' (B-Note). Rohdaten siehe Anhang~\ref{app:sus}.
+Mit einem Mittelwert von 73,5 liegt Ergonomia über dem Benchmark von 68~\cite{lewis2018} und damt im Bereich ``gut'' (B-Note). Rohdaten siehe Anhang~\ref{app:sus}.
 
 \subsection{Amershi-Evaluation}
 
@@ -50,7 +50,7 @@ Bewertung nach Amershi et al.~\cite{amershi2019} (18 Guidelines):
 \textbf{G} & \textbf{Erf.} & \textbf{Befund} \\
 \midrule
 G1 & \checkmark & Onboarding und Capability-Antwort \\
-G2 & \checkmark & Disclaimer bei Unsicherheit \\
+G2 & \checkmark & Dauerhafter Disclaimer: Fehler möglich, wichtige Infos prüfen \\
 G3 & \checkmark & Streaming, Ladeindikator \\
 G4 & \checkmark & RAG liefert relevanten Kontext \\
 G5 & \checkmark & Höfliche Antworten auf Deutsch \\
@@ -78,4 +78,4 @@ Die Think-Aloud-Protokolle ergaben folgende wiederkehrende Themen:
     \item Verbesserung: ``Vorschlagsfragen zum Einstieg würden den Nutzungseinstieg erleichtern.''
 \end{itemize}
 
-Die beiden Verbesserungspunkte flossen in die Weiterentwicklung ein: Vorschlagsfragen, Session-Verwaltung, Spracheingabe und Theme-Umschaltung.
+Die beiden Verbesserungspunkte aus der Studie haben wir direkt umgesetzt: Vorschlagsfragen, Session-Verwaltung, Spracheingabe und Theme-Umschaltung. Ob das alles tatsächlich hilft, steht allerdings noch aus -- die Tests liefen vor diesen Erweiterungen.
