@@ -1,4 +1,4 @@
-"""CLI: exhaustive crawl → JSON snapshots → embeddings → ChromaDB."""
+"""CLI: exhaustive crawl-> JSON snapshots → embeddings → ChromaDB."""
 
 from __future__ import annotations
 
