@@ -1,6 +1,6 @@
 # Ergonomia 
 
-> An ergonomically designed AI chatbot for the Immersive Reality Lab at Hamm-Lippstadt University of Applied Sciences.
+> An ergonomically designed AI Interface for the Immersive Reality Lab at Hamm-Lippstadt University of Applied Sciences.
 
 **Module:** Software-Ergonomie (AIS-B-2-6.10)  
 **Professor:** Prof. Dr.-Ing. Jan-Niklas Voigt-Antons  
